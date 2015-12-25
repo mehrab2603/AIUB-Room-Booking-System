@@ -3,7 +3,8 @@ require "include/database.php";
 session_start();
 
 $db = new Database();
-$user = $db->getUser("admin");
+$user = $db->getUser("admin");;
+
 if(password_verify("admin", $user->getPassword())) {
     $_SESSION["user"] = $user;
     header("Location: admin_panel.php");

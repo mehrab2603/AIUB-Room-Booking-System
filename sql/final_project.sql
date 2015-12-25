@@ -3,7 +3,7 @@
 -- http://www.phpmyadmin.net
 --
 -- Host: localhost
--- Generation Time: Dec 24, 2015 at 03:08 AM
+-- Generation Time: Dec 26, 2015 at 12:39 AM
 -- Server version: 5.5.46-0ubuntu0.14.04.2
 -- PHP Version: 5.5.9-1ubuntu4.14
 
@@ -38,8 +38,13 @@ CREATE TABLE IF NOT EXISTS `login` (
 --
 
 INSERT INTO `login` (`username`, `hash`, `type`) VALUES
-('admin', '$2y$10$AGIRuW3W/.31GKk.YDXbhuqXCSS69q4xknWHFxVXO.5wO7KSSRaf2', 'admin'),
-('test1', '$2y$10$udNmaTIv4v5IzwgTAGAvOuUPm.MkOkITR5PzHf0K.tQevszYSKYDe', 'user');
+('admin', '$2y$10$idGEb9G8YxAlZ8yXJlFT1uyl2nh/KEZDlxlV315iDf284HL5ODCSK', 'admin'),
+('test1', '$2y$10$jzlkua.I6BdRSNoWOkuh5ecSFRz6hgd6NXE3ibg8kXENt12dLMu5K', 'admin'),
+('test2', '$2y$10$dr4ag1kK/pY1IyUhnet2fu9dUw.dy1270vposhQuNBqMyZGBvRegq', 'user'),
+('test3', '$2y$10$cUAqsi86tIuHU6GgtNfTy.lQiEIWOOullMlI7YiC0l2LXT6h7NeWG', 'user'),
+('test4', '$2y$10$7ZwcLsxsYl/a3oOVplSx6.lwr50qxyr2sCKzlGO.V5qVzUeAz5mW2', 'user'),
+('test5', '$2y$10$836v8tETocNC8PBwRO1eCefTPkiakgJmLULvg90uXRJCvXnFUo2IS', 'user'),
+('test6', '$2y$10$K7TZoYMzicjVqsZ1/T25HOWRRVgtgadbqSV8NY/QwhCIbKjwVgfGS', 'user');
 
 -- --------------------------------------------------------
 
@@ -65,7 +70,22 @@ CREATE TABLE IF NOT EXISTS `user_info` (
 
 INSERT INTO `user_info` (`username`, `fullname`, `id`, `position`, `department`, `phone`, `email`) VALUES
 ('admin', 'HM Mehrab', '13-23396-1', 'Other', 'Other', '01752141395', 'mehrab2603@yahoo.com'),
-('test1', 'hgjhgjgjhgkjhg', 'hghgjhgjjkghj', 'Other', 'Arts and Social Sciences', '5657657865758', 'jhjgj@fhg.m');
+('test1', 'Adnan', '13-20086-1', 'Other', 'Other', '01752141090', 'mehrab2603@ya0o2o.com'),
+('test2', 'Hasan Tanvir', '13-23396-2', 'Part Timer', 'Arts and Social Sciences', '01752141397', 'mehrab2603@yahoo.com2'),
+('test3', 'Ananta Jalil', '13-23396-4', 'Part Timer', 'Arts and Social Sciences', '12345234234', 'mehrab2603@b.c'),
+('test4', 'Shabab', '13-23397-1', 'Part Timer', 'Arts and Social Sciences', '01752141325', 'mehrab2603@yahoo.com4'),
+('test5', 'Nayemul Islam Ayon', '13-23396-5', 'Professor', 'Science and Information Technology', '123452342349', 'mehrab2603@yahoo.c8m'),
+('test6', 'Kishor', '13-24396-1', 'Part Timer', 'Arts and Social Sciences', '01752141295', 'mehrab2603@yaho2.com');
+
+--
+-- Constraints for dumped tables
+--
+
+--
+-- Constraints for table `user_info`
+--
+ALTER TABLE `user_info`
+  ADD CONSTRAINT `user_info_ibfk_1` FOREIGN KEY (`username`) REFERENCES `login` (`username`) ON DELETE CASCADE ON UPDATE CASCADE;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
 /*!40101 SET CHARACTER_SET_RESULTS=@OLD_CHARACTER_SET_RESULTS */;

@@ -57,7 +57,7 @@ class Database {
     }
     
     function getUserCount() {
-        $result = $this->mysqli->query("SELECT COUNT(*) AS user_count FROM login WHERE type='user'");
+        $result = $this->mysqli->query("SELECT COUNT(*) AS user_count FROM login");
         $ret = $result->fetch_assoc();
         return $ret["user_count"];
     }
@@ -87,15 +87,55 @@ class Database {
     }
     
     function getUser($username) {
-        $loginResult = $this->mysqli->query("SELECT * FROM login WHERE username='$username'");
-        while($loginRow = $loginResult->fetch_assoc()) {
-            $infoResult = $this->mysqli->query("SELECT * FROM user_info WHERE username='$username'");
-            while($infoRow = $infoResult->fetch_assoc()) {
-                return new User($loginRow["username"], $loginRow["hash"], $infoRow["fullname"], $infoRow["id"], $infoRow["position"], $infoRow["department"], $infoRow["phone"], $infoRow["email"], $loginRow["type"]);
-            }
-        }
+        $result = $this->mysqli->query("SELECT login.*, user_info.fullname, user_info.id, user_info.position, user_info.department, user_info.phone, user_info.email FROM login LEFT JOIN user_info ON login.username = user_info.username WHERE login.username='$username'");
+        $row = $result->fetch_assoc();
+        $ret = new User($row["username"], $row["hash"], $row["fullname"], $row["id"], $row["position"], $row["department"], $row["phone"], $row["email"], $row["type"]);
+        $result->free();
+        return $ret;
     }
-
+    
+    function getUserList($username, $limit, $offset) {
+        $result = $this->mysqli->query("SELECT login.*, user_info.fullname, user_info.id, user_info.position, user_info.department, user_info.phone, user_info.email FROM login LEFT JOIN user_info ON login.username=user_info.username WHERE login.username LIKE '%$username%' LIMIT $offset, $limit");
+        
+        $ret = array();    
+        
+        while($row = $result->fetch_assoc()) {
+            array_push($ret, new User($row["username"], $row["hash"], $row["fullname"], $row["id"], $row["position"], $row["department"], $row["phone"], $row["email"], $row["type"]));
+        }
+        $result->free();
+        return $ret;
+    }
+    
+    function updateUser(User $user) {
+        $username = $this->mysqli->real_escape_string($user->getUsername());
+        $password = $user->getPassword();
+        $fullname = $this->mysqli->real_escape_string($user->getFullname());
+        $id = $this->mysqli->real_escape_string($user->getId());
+        $department = $this->mysqli->real_escape_string($user->getDepartment());
+        $position = $this->mysqli->real_escape_string($user->getPosition());
+        $phone = $this->mysqli->real_escape_string($user->getPhone());
+        $email = $this->mysqli->real_escape_string($user->getEmail());
+        $type = $user->getType();
+        
+        $result = false;
+        
+        if($password != "") {
+            $hash = password_hash($password, PASSWORD_DEFAULT);
+            $result = $this->mysqli->query("UPDATE login SET hash='$hash', type='$type' WHERE username='$username'");
+        }
+        else {
+            $result = $this->mysqli->query("UPDATE login SET type='$type' WHERE username='$username'");
+        }
+        if($result) {
+            $result = $this->mysqli->query("UPDATE user_info SET fullname='$fullname', id='$id', position='$position', department='$department', phone='$phone', email='$email' WHERE username='$username'");
+        }
+        return $result;
+    }
+    
+    function deleteUser($username) {
+        $result = $this->mysqli->query("DELETE FROM login WHERE username='$username'");
+        return $result;
+    }
     
     
 }
