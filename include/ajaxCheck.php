@@ -4,6 +4,7 @@
 
     $db = new Database();
     echo "<?xml version=\"1.0\" ?>";
+    echo "<data>";
 
     if(isset($_POST["username"])) {
         $username = $_POST["username"];
@@ -17,7 +18,6 @@
         if($response) echo "<email>true</email>";
         else echo "<email>false</email>";
     }
-
     if(isset($_POST["id"])) {
         $id = $_POST["id"];
         $response = $db->isIdTaken($id);
@@ -31,4 +31,13 @@
         if($response) echo "<phone>true</phone>";
         else echo "<phone>false</phone>";
     }
+
+    if(isset($_POST["roomId"])) {
+        $roomId = $_POST["roomId"];
+        $response = $db->isRoomIdTaken($roomId);
+        if($response) echo "<roomId>true</roomId>";
+        else echo "<roomId>false</roomId>";
+    }
+    echo "</data>";
+    
 ?>

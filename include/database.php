@@ -56,10 +56,25 @@ class Database {
         return false;
     }
     
-    function getUserCount() {
-        $result = $this->mysqli->query("SELECT COUNT(*) AS user_count FROM login");
+    function isRoomIdTaken($id) {
+        $id = $this->mysqli->real_escape_string($id);
+        $result = $this->mysqli->query("SELECT id FROM room WHERE id='$id'");
+        if($result->num_rows > 0) return true;
+        return false;
+    }
+    
+    function getUserCount($username) {
+        $username = $this->mysqli->real_escape_string($username);
+        $result = $this->mysqli->query("SELECT COUNT(*) AS user_count FROM login WHERE username LIKE '%$username%'");
         $ret = $result->fetch_assoc();
         return $ret["user_count"];
+    }
+    
+    function getRoomCount($id) {
+        $id = $this->mysqli->real_escape_string($id);
+        $result = $this->mysqli->query("SELECT COUNT(*) AS room_count FROM room WHERE id LIKE '%$id%'");
+        $ret = $result->fetch_assoc();
+        return $ret["room_count"];
     }
     
     function insertUser(User $user) {
@@ -86,7 +101,20 @@ class Database {
         return $result;
     }
     
+    function insertRoom(Room $room) {
+        $id = $this->mysqli->real_escape_string($room->getId());
+        $floor = $this->mysqli->real_escape_string($room->getFloor());
+        $campus = $this->mysqli->real_escape_string($room->getCampus());
+        $capacity = $this->mysqli->real_escape_string($room->getCapacity());
+        $type = $this->mysqli->real_escape_string($room->getType());
+        
+        
+        $result = $this->mysqli->query("INSERT INTO room(id, floor, campus, capacity, type) VALUES ('$id', '$floor', '$campus', '$capacity', '$type')");
+        return $result;
+    }
+    
     function getUser($username) {
+        $username = $this->mysqli->real_escape_string($username);
         $result = $this->mysqli->query("SELECT login.*, user_info.fullname, user_info.id, user_info.position, user_info.department, user_info.phone, user_info.email FROM login LEFT JOIN user_info ON login.username = user_info.username WHERE login.username='$username'");
         $row = $result->fetch_assoc();
         $ret = new User($row["username"], $row["hash"], $row["fullname"], $row["id"], $row["position"], $row["department"], $row["phone"], $row["email"], $row["type"]);
@@ -94,13 +122,36 @@ class Database {
         return $ret;
     }
     
+    function getRoom($id) {
+        $id = $this->mysqli->real_escape_string($id);
+        $result = $this->mysqli->query("SELECT * FROM room WHERE id='$id'");
+        $row = $result->fetch_assoc();
+        $ret = new Room($row["id"], $row["floor"], $row["campus"], $row["capacity"], $row["type"]);
+        $result->free();
+        return $ret;
+    }
+    
     function getUserList($username, $limit, $offset) {
+        $username = $this->mysqli->real_escape_string($username);
         $result = $this->mysqli->query("SELECT login.*, user_info.fullname, user_info.id, user_info.position, user_info.department, user_info.phone, user_info.email FROM login LEFT JOIN user_info ON login.username=user_info.username WHERE login.username LIKE '%$username%' LIMIT $offset, $limit");
         
         $ret = array();    
         
         while($row = $result->fetch_assoc()) {
             array_push($ret, new User($row["username"], $row["hash"], $row["fullname"], $row["id"], $row["position"], $row["department"], $row["phone"], $row["email"], $row["type"]));
+        }
+        $result->free();
+        return $ret;
+    }
+    
+    function getRoomList($id, $limit, $offset) {
+        $id = $this->mysqli->real_escape_string($id);
+        $result = $this->mysqli->query("SELECT * FROM room WHERE id LIKE '%$id%' LIMIT $offset, $limit");
+        
+        $ret = array();    
+        
+        while($row = $result->fetch_assoc()) {
+            array_push($ret, new Room($row["id"], $row["floor"], $row["campus"], $row["capacity"], $row["type"]));
         }
         $result->free();
         return $ret;
@@ -131,13 +182,31 @@ class Database {
         }
         return $result;
     }
+                       
+    function updateRoom(Room $room, $old) {
+        $id = $this->mysqli->real_escape_string($room->getId());
+        $floor = $this->mysqli->real_escape_string($room->getFloor());
+        $campus = $this->mysqli->real_escape_string($room->getCampus());
+        $capacity = $this->mysqli->real_escape_string($room->getCapacity());
+        $type = $this->mysqli->real_escape_string($room->getType());
+        $old = $this->mysqli->real_escape_string($old);
+        
+        
+        $result = $this->mysqli->query("UPDATE room SET id='$id', floor='$floor', campus='$campus', capacity='$capacity', type='$type' WHERE id='$old'");
+        
+        
+        return $result;
+    }
     
     function deleteUser($username) {
         $result = $this->mysqli->query("DELETE FROM login WHERE username='$username'");
         return $result;
     }
     
-    
+    function deleteRoom($id) {
+        $result = $this->mysqli->query("DELETE FROM room WHERE id='$id'");
+        return $result;
+    }
 }
 
 /*

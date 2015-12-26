@@ -29,11 +29,13 @@
         $userPerPage = isset($_POST["userPerPage"]) ? intval($_POST["userPerPage"]) : null;
         if(!isset($userPerPage)) $userPerPage = isset($_COOKIE["userPerPage"]) ? intval($_COOKIE["userPerPage"]) : 15;
 
-        $userCount = $database->getUserCount();
-
-        $pageRequired = ceil($userCount / $userPerPage);
+        
         $page = isset($_POST["page"]) ? intval($_POST["page"]) : 0;
         $user = isset($_POST["user"]) ? $_POST["user"] : "";
+        
+        $userCount = $database->getUserCount($user);
+
+        $pageRequired = ceil($userCount / $userPerPage);
 
         if($page >= $pageRequired) $page = $pageRequired - 1;
         else if($page < 0) $page = 0;

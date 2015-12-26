@@ -3,7 +3,7 @@
 -- http://www.phpmyadmin.net
 --
 -- Host: localhost
--- Generation Time: Dec 26, 2015 at 12:39 AM
+-- Generation Time: Dec 26, 2015 at 06:34 AM
 -- Server version: 5.5.46-0ubuntu0.14.04.2
 -- PHP Version: 5.5.9-1ubuntu4.14
 
@@ -49,6 +49,47 @@ INSERT INTO `login` (`username`, `hash`, `type`) VALUES
 -- --------------------------------------------------------
 
 --
+-- Table structure for table `room`
+--
+
+CREATE TABLE IF NOT EXISTS `room` (
+  `id` varchar(20) COLLATE utf8_bin NOT NULL,
+  `floor` varchar(10) COLLATE utf8_bin NOT NULL,
+  `campus` varchar(10) COLLATE utf8_bin NOT NULL,
+  `capacity` varchar(10) COLLATE utf8_bin NOT NULL,
+  `type` varchar(50) COLLATE utf8_bin NOT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_bin;
+
+--
+-- Dumping data for table `room`
+--
+
+INSERT INTO `room` (`id`, `floor`, `campus`, `capacity`, `type`) VALUES
+('421', '2', '4', '45', 'Theory'),
+('422', '2', '4', '45', 'Theory'),
+('423', '2', '4', '45', 'Theory'),
+('424', '2', '4', '45', 'Theory'),
+('431', '3', '4', '45', 'Theory'),
+('432', '3', '4', '45', 'Theory'),
+('433', '3', '4', '45', 'Theory'),
+('434', '3', '4', '45', 'Theory'),
+('441', '4', '4', '45', 'Theory'),
+('442', '4', '4', '45', 'Theory'),
+('443', '4', '4', '45', 'Theory'),
+('444', '4', '4', '45', 'Theory'),
+('CL1', '6', '4', '40', 'Lab(Computer)'),
+('CL2', '6', '4', '40', 'Lab(Computer)'),
+('CL3', '6', '4', '40', 'Lab(Computer)'),
+('CL4', '6', '4', '40', 'Lab(Computer)'),
+('CL5', '5', '4', '40', 'Lab(Computer)'),
+('CL6', '5', '4', '40', 'Lab(Computer)'),
+('CL7', '5', '4', '40', 'Lab(Computer)'),
+('CL8', '5', '4', '40', 'Lab(Computer)');
+
+-- --------------------------------------------------------
+
+--
 -- Table structure for table `user_info`
 --
 
@@ -69,12 +110,12 @@ CREATE TABLE IF NOT EXISTS `user_info` (
 --
 
 INSERT INTO `user_info` (`username`, `fullname`, `id`, `position`, `department`, `phone`, `email`) VALUES
-('admin', 'HM Mehrab', '13-23396-1', 'Other', 'Other', '01752141395', 'mehrab2603@yahoo.com'),
+('admin', 'Mehrab', '13-23396-1', 'Other', 'Other', '01752141395', 'mehrab2603@yahoo.com'),
 ('test1', 'Adnan', '13-20086-1', 'Other', 'Other', '01752141090', 'mehrab2603@ya0o2o.com'),
 ('test2', 'Hasan Tanvir', '13-23396-2', 'Part Timer', 'Arts and Social Sciences', '01752141397', 'mehrab2603@yahoo.com2'),
 ('test3', 'Ananta Jalil', '13-23396-4', 'Part Timer', 'Arts and Social Sciences', '12345234234', 'mehrab2603@b.c'),
 ('test4', 'Shabab', '13-23397-1', 'Part Timer', 'Arts and Social Sciences', '01752141325', 'mehrab2603@yahoo.com4'),
-('test5', 'Nayemul Islam Ayon', '13-23396-5', 'Professor', 'Science and Information Technology', '123452342349', 'mehrab2603@yahoo.c8m'),
+('test5', 'Ayon', '13-23396-5', 'Professor', 'Science and Information Technology', '123452342349', 'mehrab2603@yahoo.c8m'),
 ('test6', 'Kishor', '13-24396-1', 'Part Timer', 'Arts and Social Sciences', '01752141295', 'mehrab2603@yaho2.com');
 
 --
