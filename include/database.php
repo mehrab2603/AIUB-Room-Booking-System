@@ -63,6 +63,44 @@ class Database {
         return false;
     }
     
+    function isScheduleCreated(RoomSchedule $schedule) {
+        $room = $schedule->getRoom();
+        $day = $schedule->getDay();
+        $result = $this->mysqli->query("SELECT room FROM schedule WHERE room='$room' AND day='$day'");
+        if($result->num_rows > 0) {$result->free(); return true;}
+        else {$result->free(); return false;}
+    }
+    
+    function isScheduleClash(RoomSchedule $schedule) {
+        $room = $schedule->getRoom();
+        $day = $schedule->getDay();
+        $course = $this->mysqli->real_escape_string($schedule->getCourse());
+        $start = $schedule->getStart();
+        $end = $schedule->getEnd();
+        
+        $query = "SELECT ";
+        for($i = $start; $i < $end; $i++) $query = $query."`".$i."`, ";
+        $query = $query."`".$end."` FROM schedule WHERE room='$room' AND day='$day'";
+        
+        
+        $result = $this->mysqli->query($query);
+        
+        $row = $result->fetch_assoc();
+        
+        foreach($row as $key => $value) {
+            if($value != "") return true;
+        }
+        return false;
+    }
+    
+    function isAlreadyScheduled($room, $day, $course) {
+        $ret = $this->getScheduleList($room, $day);
+        foreach($ret as $schedule) {
+            if($schedule->getCourse() == $course) return true;
+        }
+        return false;
+    }
+    
     function getUserCount($username) {
         $username = $this->mysqli->real_escape_string($username);
         $result = $this->mysqli->query("SELECT COUNT(*) AS user_count FROM login WHERE username LIKE '%$username%'");
@@ -76,6 +114,7 @@ class Database {
         $ret = $result->fetch_assoc();
         return $ret["room_count"];
     }
+    
     
     function insertUser(User $user) {
         $username = $this->mysqli->real_escape_string($user->getUsername());
@@ -110,6 +149,24 @@ class Database {
         
         
         $result = $this->mysqli->query("INSERT INTO room(id, floor, campus, capacity, type) VALUES ('$id', '$floor', '$campus', '$capacity', '$type')");
+        return $result;
+    }
+    
+    function insertSchedule(RoomSchedule $schedule) {
+        $room = $schedule->getRoom();
+        $day = $schedule->getDay();
+        $course = $this->mysqli->real_escape_string($schedule->getCourse());
+        $start = $schedule->getStart();
+        $end = $schedule->getEnd();
+        
+        $query = "INSERT INTO schedule(room, day";
+        for($i = $start; $i <= $end; $i++) $query = $query.", `".$i."`";
+        $query = $query.") VALUES('$room', '$day'";
+        for($i = $start; $i <= $end; $i++) $query = $query.", '$course'";
+        $query = $query.")";
+        
+        $result = $this->mysqli->query($query);
+        
         return $result;
     }
     
@@ -157,6 +214,46 @@ class Database {
         return $ret;
     }
     
+    function getScheduleList($room, $day) {
+        
+        $result = $this->mysqli->query("SELECT `1`,`2`,`3`,`4`,`5`,`6`,`7`,`8`,`9`,`10`,`11`,`12`,`13`,`14`,`15`,`16`,`17`,`18`,`19`,`20`,`21`,`22`,`23`,`24`,`25`,`26`,`27`,`28`,`29` FROM schedule WHERE room='$room' AND day='$day'");
+        
+        if($result) {
+           
+            $row = $result->fetch_assoc();
+
+            $courses = array();
+
+            foreach($row as $key => $value) {
+                array_push($courses, $value);
+            }
+            $courses = array_unique($courses);
+
+            reset($row);
+
+            $ret = array();
+
+            foreach($courses as $course) {
+                if($course == "") continue;
+                $keys = array_keys($row, $course);
+
+                $temp = 0;
+                $keyCount = count($keys);
+                
+                for($i = 1; $i < $keyCount; $i++) {
+                    if($keys[$i] - $keys[$i - 1] > 1) {
+                        array_push($ret, new RoomSchedule($room, $day, $course, $keys[$temp], $keys[$i - 1]));
+                        $temp = $i;
+                    }
+                }
+                if($temp != $keyCount) array_push($ret, new RoomSchedule($room, $day, $course, $keys[$temp], $keys[$keyCount - 1]));
+            }
+            $result->free();
+            return $ret;
+        }
+        else return null;
+    }
+    
     function updateUser(User $user) {
         $username = $this->mysqli->real_escape_string($user->getUsername());
         $password = $user->getPassword();
@@ -198,6 +295,22 @@ class Database {
         return $result;
     }
     
+    function updateSchedule(RoomSchedule $schedule) {
+        $room = $schedule->getRoom();
+        $day = $schedule->getDay();
+        $course = $this->mysqli->real_escape_string($schedule->getCourse());
+        $start = $schedule->getStart();
+        $end = $schedule->getEnd();
+        
+        $query = "UPDATE schedule SET ";
+        for($i = $start; $i <= $end; $i++) $query = $query."`".$i."`='$course', ";
+        $query = $query."`".$end."`='$course' WHERE room='$room' AND day='$day'";
+        
+        $result = $this->mysqli->query($query);
+        
+        return $result;
+    }
+    
     function deleteUser($username) {
         $result = $this->mysqli->query("DELETE FROM login WHERE username='$username'");
         return $result;
@@ -207,211 +320,11 @@ class Database {
         $result = $this->mysqli->query("DELETE FROM room WHERE id='$id'");
         return $result;
     }
-}
-
-/*
-
-if (!$conn) {
-    die("Connection failed: " . mysqli_connect_error());
-}
-
-function check_username($username) {
-    global $conn;
-    $result = mysqli_query($conn, "SELECT username FROM Login WHERE username='".$username."'");
-    if(mysqli_num_rows($result) > 0) return false;
-    return true;
-}
-
-function check_username_with_password($username, $password) {
-    global $conn;
-    $result = mysqli_query($conn, "SELECT * FROM Login WHERE username='".$username."' AND password='".$password."'");
-    return mysqli_fetch_assoc($result);
-}
-
-function get_user_info($username) {
-    global $conn;
-    $result = mysqli_query($conn, "SELECT * FROM Info WHERE username='".$username."'");
-    while($row = mysqli_fetch_assoc($result)) {
-        $info = array("username"=>$row["username"], "full_name"=>$row["full_name"], "address"=>$row["address"], "phone"=>$row["phone"], "email"=>$row["email"], "pp"=>$row["pp"]);
-        return $info;
-    }
-}
-
-function get_stories($username, $limit, $offset) {
-    global $conn;
-    $result = mysqli_query($conn, "SELECT * FROM Story WHERE username='$username' LIMIT $offset, $limit");
-    $ret = array();
-    if($result == false) return;
-    while($row = mysqli_fetch_assoc($result)) {
-        array_push($ret, $row);
-    }
-    return $ret;
-}
-
-function get_stories_all($limit, $offset) {
-    global $conn;
-    $result = mysqli_query($conn, "SELECT * FROM Story LIMIT $limit OFFSET $offset");
-    $ret = array();
-    if($result == false) return;
-    while($row = mysqli_fetch_assoc($result)) {
-        array_push($ret, $row);
-    }
-    return $ret;
-}
-
-function get_story($path) {
-    global $conn;
-    $result = mysqli_query($conn, "SELECT * FROM Story WHERE path='$path'");
-    return mysqli_fetch_assoc($result);
     
-}
-
-function get_like($username, $path) {
-    global $conn;
-    $result = mysqli_query($conn, "SELECT * FROM Likes WHERE username='$username' AND story='$path'");
-    if($result == false) return false;
-    if(mysqli_num_rows($result) > 0) return true;
-    return false;
-}
-
-function get_like_count($path) {
-    global $conn;
-    $result = mysqli_query($conn, "SELECT COUNT(*) AS like_count FROM Likes WHERE story='$path'");
-    return mysqli_fetch_assoc($result)["like_count"];
-}
-
-function get_view_count($username) {
-    global $conn;
-    $result = mysqli_query($conn, "SELECT SUM(views) AS sum FROM Story WHERE username='$username'");
-    return mysqli_fetch_assoc($result)["sum"];
-    
-}
-
-function get_story_count($username) {
-    global $conn;
-    $result = mysqli_query($conn, "SELECT COUNT(*) AS story_count FROM Story WHERE username='".$username."'");
-    $row = mysqli_fetch_assoc($result);
-    return $row["story_count"];
-}
-
-function get_story_count_all() {
-    global $conn;
-    $result = mysqli_query($conn, "SELECT COUNT(*) AS story_count FROM Story");
-    $row = mysqli_fetch_assoc($result);
-    return $row["story_count"];
-}
-
-function check_photo($file) {
-    if($file["type"][0] == 'i' && $file["type"][1] == 'm' && $file["type"][2] == 'a' && $file["type"][3] == 'g' && $file["type"][4] == 'e') {
-        if($file["size"] <= 200000) {
-            return "";
-        }
-        else {
-            return "Photo Size Error. Max 200KB allowed.";
-        }
-    }
-    else {
-        return "Uploaded file not an image file.";
+    function deleteAllRoomDaySchedule($room, $day) {
+        $result = $this->mysqli->query("DELETE FROM schedule WHERE room='$room' AND day='$day'");
+        return $result;
     }
 }
-
-function move_photo($file, $username) {
-    global $target;
-    $previous_photo = glob($username.".*");
-    if(count($previous_photo) > 0) array_map('unlink', $previous_photo);
-    $file["name"] = $username.".".pathinfo($file["name"], PATHINFO_EXTENSION);
-    $uri = $target.basename($file["name"]);
-    if(move_uploaded_file($file["tmp_name"], $uri)) return $uri;
-    else return false;
-}
-
-function insert_user_login($username, $password) {
-    global $conn;
-    $result = mysqli_query($conn, "INSERT INTO Login(username, password, type) VALUES ('$username', '$password', 'user')");
-    return $result;
-}
-
-function insert_user_info($username, $full_name, $address, $phone, $email, $pp) {
-    global $conn;
-    $result = mysqli_query($conn, "INSERT INTO Info(username, full_name, address, phone, email, pp) VALUES ('$username', '$full_name', '$address', '$phone', '$email', '$pp')");
-    return $result;
-}
-
-function insert_story($username, $title, $body) {
-    global $conn, $target;
-    $story_count = get_story_count($username);
-    if($story_count >= 10000) return "You have reached the maximum number of stories allowed. Please delete some stories to continue";
-    $filename = $target.$username."_story".strval($story_count + 1);
-    $date = date("Y-m-d H:i:s");
-    $result = mysqli_query($conn, "INSERT INTO Story(username, title, path, views, likes, date) VALUES('$username', '$title', '$filename', '0', '0', '$date')");
-    if($result) {
-        $file = fopen($filename, "w");
-        fwrite($file, $body);
-        fclose($file);
-    }
-    else return "Could not upload story";
-    return $result;
-}
-
-function insert_like($username, $path) {
-    global $conn;
-    $result = mysqli_query($conn, "INSERT INTO Likes(username, story) VALUES('$username', '$path')");
-    if($result == false) return "Could not update like";
-    $likes = get_like_count($path);
-    update_like_story($path, $likes);
-    return $result;
-}
-
-function update_story($title, $body, $path) {
-    global $conn;
-    $result = mysqli_query($conn, "UPDATE Story SET title='$title' WHERE path='$path'");
-    if($result) {
-        $file = fopen($path, "w");
-        fwrite($file, $body);
-        fclose($file);
-    }
-    else return "Could not upload story";
-    return $result;
-}
-
-function update_user_info($username, $full_name, $address, $phone, $email, $pp) {
-    global $conn;
-    $result = mysqli_query($conn, "UPDATE Info SET full_name='$full_name', address='$address', phone='$phone', email='$email', pp='$pp' WHERE username='$username'");
-    return $result;
-}
-
-function update_login_info($username, $password) {
-    global $conn;
-    $result = mysqli_query($conn, "UPDATE Login SET password='$password' WHERE username='$username'");
-    return $result;
-}
-
-function update_view($path, $view) {
-    global $conn;
-    $result = mysqli_query($conn, "UPDATE Story SET views='$view' WHERE path='$path'");
-    return $result;
-}
-
-function update_like_story($path, $likes) {
-    global $conn;
-    $result = mysqli_query($conn, "UPDATE Story SET likes='$likes' WHERE path='$path'");
-    return $result;
-}
-
-function delete_story($path) {
-    global $conn;
-    $result = mysqli_query($conn, "DELETE FROM Story WHERE path='$path'");
-    unlink($path);
-}
-
-function delete_like($username, $path) {
-    global $conn;
-    $result = mysqli_query($conn, "DELETE FROM Likes WHERE username='$username' AND story='$path'");
-    $likes = get_like_count($path);
-    update_like_story($path, $likes);
-    return $result;
-}
-
-*/
 
 ?>

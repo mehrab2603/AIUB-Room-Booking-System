@@ -38,6 +38,15 @@
         if($response) echo "<roomId>true</roomId>";
         else echo "<roomId>false</roomId>";
     }
+    if(isset($_POST["course"])) {
+        $room = $_POST["room"];
+        $day = $_POST["day"];
+        $course = $_POST["course"];
+        $response = $db->isAlreadyScheduled($room, $day, $course);
+        if($response) echo "<schedule>true</schedule>";
+        else echo "<schedule>false</schedule>";
+    }
+
     echo "</data>";
     
 ?>
