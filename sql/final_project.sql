@@ -3,7 +3,7 @@
 -- http://www.phpmyadmin.net
 --
 -- Host: localhost
--- Generation Time: Dec 26, 2015 at 06:34 AM
+-- Generation Time: Dec 26, 2015 at 10:06 PM
 -- Server version: 5.5.46-0ubuntu0.14.04.2
 -- PHP Version: 5.5.9-1ubuntu4.14
 
@@ -90,6 +90,47 @@ INSERT INTO `room` (`id`, `floor`, `campus`, `capacity`, `type`) VALUES
 -- --------------------------------------------------------
 
 --
+-- Table structure for table `schedule`
+--
+
+CREATE TABLE IF NOT EXISTS `schedule` (
+  `room` varchar(20) COLLATE utf8_bin NOT NULL,
+  `day` varchar(10) COLLATE utf8_bin NOT NULL,
+  `1` varchar(100) COLLATE utf8_bin NOT NULL,
+  `2` varchar(100) COLLATE utf8_bin NOT NULL,
+  `3` varchar(100) COLLATE utf8_bin NOT NULL,
+  `4` varchar(100) COLLATE utf8_bin NOT NULL,
+  `5` varchar(100) COLLATE utf8_bin NOT NULL,
+  `6` varchar(100) COLLATE utf8_bin NOT NULL,
+  `7` varchar(100) COLLATE utf8_bin NOT NULL,
+  `8` varchar(100) COLLATE utf8_bin NOT NULL,
+  `9` varchar(100) COLLATE utf8_bin NOT NULL,
+  `10` varchar(100) COLLATE utf8_bin NOT NULL,
+  `11` varchar(100) COLLATE utf8_bin NOT NULL,
+  `12` varchar(100) COLLATE utf8_bin NOT NULL,
+  `13` varchar(100) COLLATE utf8_bin NOT NULL,
+  `14` varchar(100) COLLATE utf8_bin NOT NULL,
+  `15` varchar(100) COLLATE utf8_bin NOT NULL,
+  `16` varchar(100) COLLATE utf8_bin NOT NULL,
+  `17` varchar(100) COLLATE utf8_bin NOT NULL,
+  `18` varchar(100) COLLATE utf8_bin NOT NULL,
+  `19` varchar(100) COLLATE utf8_bin NOT NULL,
+  `20` varchar(100) COLLATE utf8_bin NOT NULL,
+  `21` varchar(100) COLLATE utf8_bin NOT NULL,
+  `22` varchar(100) COLLATE utf8_bin NOT NULL,
+  `23` varchar(100) COLLATE utf8_bin NOT NULL,
+  `24` varchar(100) COLLATE utf8_bin NOT NULL,
+  `25` varchar(100) COLLATE utf8_bin NOT NULL,
+  `26` varchar(100) COLLATE utf8_bin NOT NULL,
+  `27` varchar(100) COLLATE utf8_bin NOT NULL,
+  `28` varchar(100) COLLATE utf8_bin NOT NULL,
+  `29` varchar(100) COLLATE utf8_bin NOT NULL,
+  PRIMARY KEY (`room`,`day`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_bin;
+
+-- --------------------------------------------------------
+
+--
 -- Table structure for table `user_info`
 --
 
@@ -121,6 +162,12 @@ INSERT INTO `user_info` (`username`, `fullname`, `id`, `position`, `department`,
 --
 -- Constraints for dumped tables
 --
+
+--
+-- Constraints for table `schedule`
+--
+ALTER TABLE `schedule`
+  ADD CONSTRAINT `schedule_ibfk_1` FOREIGN KEY (`room`) REFERENCES `room` (`id`) ON DELETE CASCADE ON UPDATE CASCADE;
 
 --
 -- Constraints for table `user_info`
