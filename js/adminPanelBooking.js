@@ -299,7 +299,7 @@ function showEditBooking(id, room, user, date, course, start, end, type) {
     document.getElementById("edit-booking-course").value = course;
     document.getElementById("edit-booking-course").className = "valid";
     document.getElementById("edit-booking-start").value = start;
-    document.getElementById("edit-booking-end").value = end;
+    document.getElementById("edit-booking-end").value = (parseInt(end) + 1).toString();
     if(type == "Make Up") document.getElementById("edit-booking-type-makeup").checked = "true";
     else if(type == "Advance Make Up") document.getElementById("edit-booking-type-advanced-makeup").checked = "true";
     else document.getElementById("edit-booking-type-other").checked = "true";

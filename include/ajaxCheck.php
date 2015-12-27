@@ -46,6 +46,12 @@
         if($response) echo "<schedule>true</schedule>";
         else echo "<schedule>false</schedule>";
     }
+    if(isset($_POST["password"])) {
+        $password = $_POST["password"];
+        $hash = $_POST["hash"];
+        if(password_verify($password, $hash)) echo "<password>true</password>";
+        else echo "<password>false</password>";
+    }
     if(isset($_POST["schedule"])) {
         $arr = json_decode($_POST["schedule"]);
         $schedule = new RoomSchedule($arr->room, $arr->day, $arr->course, $arr->start, $arr->end);

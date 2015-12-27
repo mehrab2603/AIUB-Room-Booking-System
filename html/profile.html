@@ -1,0 +1,197 @@
+<div id="update-profile">
+    <div class="row">
+        <div class="col s12">
+            <h4>Profile</h4>
+            <hr />
+        </div>
+        <div class="col s12">
+            <table>
+                <tr>
+                    <td>Username</td>
+                    <td id="username-cell"></td>
+                    <td id="username-option-cell"></td>
+                </tr>
+                <tr>
+                    <td>Password</td>
+                    <td id="password-cell"></td>
+                    <td id="password-option-cell"><a data-target="edit-password-modal" class="waves-effect waves-light btn edit-password-modal-trigger" id="edit-password-button">Edit</a></td>
+                </tr>
+                <tr>
+                    <td>Full Name</td>
+                    <td id="fullname-cell"></td>
+                    <td id="fullname-option-cell"><a data-target="edit-fullname-modal" class="waves-effect waves-light btn edit-fullname-modal-trigger" id="edit-fullname-button ">Edit</a></td>
+                </tr>
+                <tr>
+                    <td>ID</td>
+                    <td id="id-cell"></td>
+                    <td id="id-option-cell"><a data-target="edit-id-modal" class="waves-effect waves-light btn edit-id-modal-trigger" id="edit-fullname-button ">Edit</a></td>
+                </tr>
+                <tr>
+                    <td>Position</td>
+                    <td id="position-cell"></td>
+                    <td id="position-option-cell"><a data-target="edit-position-modal" class="waves-effect waves-light btn edit-position-modal-trigger" id="edit-fullname-button ">Edit</a></td>
+                </tr>
+                <tr>
+                    <td>Department</td>
+                    <td id="department-cell"></td>
+                    <td id="department-option-cell"><a data-target="edit-department-modal" class="waves-effect waves-light btn edit-department-modal-trigger" id="edit-fullname-button ">Edit</a></td>
+                </tr>
+                <tr>
+                    <td>Phone</td>
+                    <td id="phone-cell"></td>
+                    <td id="phone-option-cell"><a data-target="edit-phone-modal" class="waves-effect waves-light btn edit-phone-modal-trigger" id="edit-fullname-button ">Edit</a></td>
+                </tr>
+                <tr>
+                    <td>Email</td>
+                    <td id="email-cell"></td>
+                    <td id="email-option-cell"><a data-target="edit-email-modal" class="waves-effect waves-light btn edit-email-modal-trigger" id="edit-fullname-button ">Edit</a></td>
+                </tr>
+            </table>
+        </div>
+        <div id="edit-password-modal" class="modal">
+            <div class="modal-content">
+                <h5 id="edit-password-header">Edit Password</h5>
+                <div class="row">
+                    <div class="input-field col s12">
+                        <input type="password" id="edit-password-old" required>
+                        <label for="edit-password-old" id="edit-password-old-label" data-error="Error">Old Password</label>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="input-field col s12">
+                        <input type="password" id="edit-password-new" required>
+                        <label for="edit-password-new" id="edit-password-new-label" data-error="Error">New Password</label>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="input-field col s12">
+                        <input type="password" id="edit-password-retype" required>
+                        <label for="edit-password-retype" id="edit-password-retype-label" data-error="Error">Retype Password</label>
+                    </div>
+                </div>
+                <div class="row right">
+                    <button class="btn waves-effect waves-light red" type="button" onclick="$('#edit-password-modal').closeModal();">Cancel</button>
+                    <button id="password-save-button" class="btn waves-effect waves-light" type="button">Save</button>
+                </div>
+            </div>
+        </div>
+        
+        
+        
+        <div id="edit-fullname-modal" class="modal">
+            <div class="modal-content">
+                <h5 id="edit-fullname-header">Edit Full Name</h5>
+                <div class="row">
+                    <div class="input-field col s12">
+                        <input type="text" id="edit-fullname" placeholder="Alpha-numeric characters or underscores or hyphens" required>
+                        <label for="edit-fullname" id="edit-fullname-label" data-error="Error">Full Name</label>
+                    </div>
+                </div>
+                <div class="row right">
+                    <button class="btn waves-effect waves-light red" type="button" onclick="$('#edit-fullname-modal').closeModal();">Cancel</button>
+                    <button id="fullname-save-button" class="btn waves-effect waves-light" type="button">Save</button>
+                </div>
+            </div>
+        </div>
+        
+        <div id="edit-id-modal" class="modal">
+            <div class="modal-content">
+                <h5 id="edit-id-header">Edit ID</h5>
+                <div class="row">
+                    <div class="input-field col s12">
+                        <input type="text" id="edit-id" placeholder="Alpha-numeric characters or underscores or hyphens" required>
+                        <label for="edit-id" id="edit-id-label" data-error="Error">ID</label>
+                    </div>
+                </div>
+                <div class="row right">
+                    <button class="btn waves-effect waves-light red" type="button" onclick="$('#edit-id-modal').closeModal();">Cancel</button>
+                    <button id="id-save-button" class="btn waves-effect waves-light" type="button">Save</button>
+                </div>
+            </div>
+        </div>
+        
+        <div id="edit-position-modal" class="modal">
+            <div class="modal-content">
+                <h5 id="edit-position-header">Edit Position</h5>
+                <div class="row">
+                    <div class="input-field col s12">
+                        <select id="edit-position" required>
+                            <option value="Part Timer">Part Timer</option>
+                            <option value="Instructor">Instructor</option>
+                            <option value="Lecturer">Lecturer</option>
+                            <option value="Assistant Professor">Assistant Professor</option>
+                            <option value="Associate Professor">Associate Professor</option>
+                            <option value="Professor">Professor</option>
+                            <option value="Head of Department">Head of Department</option>
+                            <option value="Dean">Dean</option>
+                            <option value="Vice Chancellor">Vice Chancellor</option>
+                            <option value="Other">Other</option>
+                        </select>
+                        
+                        <label for="edit-position" id="edit-position-label" data-error="Error">Position</label>
+                    </div>
+                </div>
+                <div class="row right">
+                    <button class="btn waves-effect waves-light red" type="button" onclick="$('#edit-position-modal').closeModal();">Cancel</button>
+                    <button id="position-save-button" class="btn waves-effect waves-light" type="button">Save</button>
+                </div>
+            </div>
+        </div>
+        
+        <div id="edit-department-modal" class="modal">
+            <div class="modal-content">
+                <h5 id="edit-department-header">Edit Department</h5>
+                <div class="row">
+                    <div class="input-field col s12">
+                        <select id="edit-department" required>
+                            <option value="Arts and Social Sciences">Arts and Social Sciences</option>
+                            <option value="Business Administration">Business Administration</option>
+                            <option value="Engineering">Engineering</option>
+                            <option value="Science and Information Technology">Science and Information Technology</option>
+                            <option value="Other">Other</option>
+                        </select>
+                        <label for="edit-department" id="edit-department-label" data-error="Error">Department</label>
+                    </div>
+                </div>
+                <div class="row right">
+                    <button class="btn waves-effect waves-light red" type="button" onclick="$('#edit-department-modal').closeModal();">Cancel</button>
+                    <button id="department-save-button" class="btn waves-effect waves-light" type="button">Save</button>
+                </div>
+            </div>
+        </div>
+        
+        <div id="edit-phone-modal" class="modal">
+            <div class="modal-content">
+                <h5 id="edit-phone-header">Edit Phone</h5>
+                <div class="row">
+                    <div class="input-field col s12">
+                        <input type="text" id="edit-phone" placeholder="At least 7 digits" required>
+                        <label for="edit-phone" id="edit-phone-label" data-error="Error">Phone</label>
+                    </div>
+                </div>
+                <div class="row right">
+                    <button class="btn waves-effect waves-light red" type="button" onclick="$('#edit-phone-modal').closeModal();">Cancel</button>
+                    <button id="phone-save-button" class="btn waves-effect waves-light" type="button">Save</button>
+                </div>
+            </div>
+        </div>
+        
+        <div id="edit-email-modal" class="modal">
+            <div class="modal-content">
+                <h5 id="edit-email-header">Edit Email</h5>
+                <div class="row">
+                    <div class="input-field col s12">
+                        <input type="text" id="edit-email" placeholder="Valid email address" required>
+                        <label for="edit-email" id="edit-email-label" data-error="Error">Email</label>
+                    </div>
+                </div>
+                <div class="row right">
+                    <button class="btn waves-effect waves-light red" type="button" onclick="$('#edit-email-modal').closeModal();">Cancel</button>
+                    <button id="email-save-button" class="btn waves-effect waves-light" type="button">Save</button>
+                </div>
+            </div>
+        </div>
+        
+        
+    </div>
+</div>

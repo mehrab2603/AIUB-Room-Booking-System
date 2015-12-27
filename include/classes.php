@@ -1242,14 +1242,216 @@
                     11 : "December"
                 }
             </script>
-
-            <script type="text/javascript" src="js/adminPanelSchedule.js"></script>
+            
             <script type="text/javascript" src="js/adminPanelRoom.js"></script>
             <script type="text/javascript" src="js/adminPanelUser.js"></script>
+            <script type="text/javascript" src="js/adminPanelSchedule.js"></script>
             <script type="text/javascript" src="js/adminPanelBooking.js"></script>
 
             <?php
         }
     }
 
+
+
+
+
+
+
+    class UserPanelPage {
+        private $content, $navBarId, $contentId, $pagination;
+        private $logo;
+        private $options;
+        public function __construct($content) {
+            $this->content = $content;
+            $this->navBarId = "user-nav";
+            $this->contentId = "content-area";
+            $this->logo = array("text" => "Logo", "image" => "", "url" => "#");
+            $this->options = array(new Option("Profile", "profile", "getProfileContent()"), new Option("Bookings", "bookings", "getBookingsContent()"), new Option("Report", "report", "getReportContent()"),  new Option("Logout", "logout", "getLogoutContent()"));
+            $this->pagination = 5;
+        }
+        
+        public function display() {
+            echo "<!DOCTYPE html><html>";
+            $this->head();
+            $this->body();
+            
+            echo "</html>";
+        }
+        
+        
+        
+        protected function head() {
+            ?>
+            <head>
+                <!--Import Google Icon Font-->
+                <link href="http://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+                <!--Import materialize.css-->
+                <link type="text/css" rel="stylesheet" href="css/materialize.min.css"  media="screen,projection"/>
+                <!--Import styles.css-->
+                <link type="text/css" rel="stylesheet" href="css/styles.css"  media="screen,projection"/>
+                
+                <!--Let browser know website is optimized for mobile-->
+                <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+            </head>
+            <?php
+        }
+        
+        protected function body() {
+            ?>
+
+            <body>
+                <div class="row">
+                    <div class="col s2">
+                        <?php $this->sideBar(); ?>
+                    </div>
+                    <div class="col s10 offset-s2">
+                        <a href="#" data-activates="<?php echo $this->navBarId; ?>" class="button-collapse top-nav full hide-on-large-only"><i class="mdi-navigation-menu"></i></a>
+                        <div class="container" id="<?php echo $this->contentId; ?>">
+                            <?php //echo $this->content; ?>
+                        </div>
+                    </div>
+                </div>
+                <?php $this->extra(); $this->scripts(); ?>
+            </body>
+            <?php
+        }
+        
+        protected function sideBar() {
+            
+            echo "<ul id=\"$this->navBarId\" class=\"side-nav fixed\"";
+            echo "  <a href=\"".$this->logo['url']."\" class=\"brand-logo\">".$this->logo['text']."</a>";
+            
+            reset($this->options);
+            foreach($this->options as $option) {
+                echo "<li onclick=\"".$option->getOnClick()."\" id=\"".$option->getId()."\" class=\"bold\"><a class=\"waves-effect waves-teal\">".$option->getText()."</a></li>";
+            }
+            echo "</ul>";
+            reset($this->options);
+        }
+        
+        protected function extra() {
+            
+        }
+        
+        protected function scripts() {
+            ?>
+            <!--Import jQuery before materialize.js-->
+            <script type="text/javascript" src="https://code.jquery.com/jquery-2.1.1.min.js"></script>
+            <script type="text/javascript" src="js/materialize.min.js"></script>
+            
+            <script>
+                var pagination = "<?php echo $this->pagination; ?>";
+                pagination = parseInt(pagination);
+                
+                var currentUserPage, currentRoomPage, currentSchedulePage, currentBookingPage;
+                
+                // Initialize Materialize Components
+                $(document).ready(function(){
+                    $('select').material_select();
+                    $(".button-collapse").sideNav();
+                    $('.datepicker').pickadate({
+                        selectMonths: true, // Creates a dropdown to control month
+                        selectYears: 15 // Creates a dropdown of 15 years to control year
+                      });
+                });
+                
+                function getXMLHTTPRequest() {
+                    var req = false;
+                    try {
+                        /* for Firefox */
+                        req = new XMLHttpRequest();
+                    } catch (err) {
+                        try {
+                            /* for some versions of IE */
+                            req = new ActiveXObject("Msxml2.XMLHTTP");
+                        } catch (err) {
+                            try {
+                            /* for some other versions of IE */
+                                req = new ActiveXObject("Microsoft.XMLHTTP");
+                            } catch (err) {
+                                req = false;
+                            }
+                        }
+                    }
+                    return req;
+                }
+                
+                var content = document.getElementById(<?php echo "\"".$this->contentId."\""; ?>);
+                var contentId = <?php echo "\"".$this->contentId."\""; ?>;
+                var htmlContent = "html/";
+                var timeBlock = {
+                    1 : "8:00 AM",
+                    2 : "8:30 AM",
+                    3 : "9:00 AM",
+                    4 : "9:30 AM",
+                    5 : "10:00 AM",
+                    6 : "10:30 AM",
+                    7 : "11:00 AM",
+                    8 : "11:30 AM",
+                    9 : "12:00 PM",
+                    10 : "12:30 PM",
+                    11 : "1:00 PM",
+                    12 : "1:30 PM",
+                    13 : "2:00 PM",
+                    14 : "2:30 PM",
+                    15 : "3:00 PM",
+                    16 : "3:30 PM",
+                    17 : "4:00 PM",
+                    18 : "4:30 PM",
+                    19 : "5:00 PM",
+                    20 : "5:30 PM",
+                    21 : "6:00 PM",
+                    22 : "6:30 PM",
+                    23 : "7:00 PM",
+                    24 : "7:30 PM",
+                    25 : "8:00 PM",
+                    26 : "8:30 PM",
+                    27 : "9:00 PM",
+                    28 : "9:30 PM",
+                    29 : "10:00 PM"
+                }
+                var dayMap = {
+                    0 : "Sunday",
+                    1 : "Monday",
+                    2 : "Tuesday",
+                    3 : "Wednesday",
+                    4 : "Thursday",
+                    5 : "Friday",
+                    6 : "Saturday"
+                }
+                var monthMap = {
+                    0 : "January",
+                    1 : "February",
+                    2 : "March",
+                    3 : "April",
+                    4 : "May",
+                    5 : "June",
+                    6 : "July",
+                    7 : "August",
+                    8 : "September",
+                    9 : "October",
+                    10 : "November",
+                    11 : "December"
+                }
+                
+                var userInfo = {
+                    username : "<?php echo $_SESSION["user"]->getUsername(); ?>",
+                    password : "<?php echo $_SESSION["user"]->getPassword(); ?>",
+                    fullname : "<?php echo $_SESSION["user"]->getFullname(); ?>",
+                    id : "<?php echo $_SESSION["user"]->getId(); ?>",
+                    position : "<?php echo $_SESSION["user"]->getPosition(); ?>",
+                    department : "<?php echo $_SESSION["user"]->getDepartment(); ?>",
+                    phone : "<?php echo $_SESSION["user"]->getPhone(); ?>",
+                    email : "<?php echo $_SESSION["user"]->getEmail(); ?>",
+                    type : "<?php echo $_SESSION["user"]->getType(); ?>"
+                }
+            </script>
+            <script type="text/javascript" src="js/userPanelProfile.js"></script>
+
+
+            <?php
+        }
+    }
+    
 ?>

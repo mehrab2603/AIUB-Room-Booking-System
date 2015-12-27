@@ -8,6 +8,6 @@
     }
 
 
-    $page = new AdminPanelPage("hello world");
+    $page = new UserPanelPage("hello world");
     $page->display();
 ?>
