@@ -1002,7 +1002,7 @@
                                 
                                 <div class="row">
                                     <div class="input-field col s12">
-                                        <input type="text" id="edit-booking-date" maxlength="20" placeholder="Maximum 20 alphanumeric character or hyphen or space" required>
+                                        <input type="date" class="datepicker" id="edit-booking-date" required>
                                         <label for="edit-booking-date" id="edit-booking-date-label">Date</label>
                                     </div>
                                 </div>
@@ -1344,7 +1344,7 @@
                 var pagination = "<?php echo $this->pagination; ?>";
                 pagination = parseInt(pagination);
                 
-                var currentUserPage, currentRoomPage, currentSchedulePage, currentBookingPage;
+                var currentBookingPage;
                 
                 // Initialize Materialize Components
                 $(document).ready(function(){
@@ -1448,6 +1448,7 @@
                 }
             </script>
             <script type="text/javascript" src="js/userPanelProfile.js"></script>
+            <script type="text/javascript" src="js/userPanelBooking.js"></script>
 
 
             <?php

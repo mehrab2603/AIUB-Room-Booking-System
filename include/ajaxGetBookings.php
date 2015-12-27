@@ -17,14 +17,17 @@
     $user = isset($_POST["user"]) ? $_POST["user"] : "";
     $like = isset($_POST["like"]) ? true : false;
 
-    $bookingCount = $db->getBookingCount($user, $room, $like);
+    $date =  isset($_POST["date"]) ? $_POST["date"] : "";
+    $expired = isset($_POST["expired"]) ? $_POST["expired"] : "";
+
+    $bookingCount = $db->getBookingCount($user, $room, $like, $date, $expired);
 
     $pageRequired = ceil($bookingCount / $bookingPerPage);
 
     if($page >= $pageRequired) $page = $pageRequired - 1;
     else if($page < 0) $page = 0;
 
-    $ret = $db->getBookingList($user, $room, $like, $bookingPerPage, $page * $bookingPerPage);
+    $ret = $db->getBookingList($user, $room, $like, $bookingPerPage, $page * $bookingPerPage, $date, $expired);
 
 
     echo "<pageRequired>".$pageRequired."</pageRequired>";

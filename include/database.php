@@ -149,13 +149,13 @@ class Database {
         return $ret["room_count"];
     }
     
-    function getBookingCount($user, $room, $like) {
+    function getBookingCount($user, $room, $like, $date, $expired) {
         $query = "SELECT COUNT(*) as booking_count FROM booking WHERE ";
         if($like) {
-            if($user == "" && $room != "") {
+            if($user != "" && $room == "") {
                 $query = $query."user LIKE '%$user%'";
             }
-            else if($user != "" && $room == "") {
+            else if($user == "" && $room != "") {
                 $query = $query."room LIKE '%$room%'";
             }
             else if($user != "" && $room != "") {
@@ -166,10 +166,10 @@ class Database {
             }
         }
         else {
-            if($user == "" && $room != "") {
+            if($user != "" && $room == "") {
                 $query = $query."user='$user'";
             }
-            else if($user != "" && $room == "") {
+            else if($user == "" && $room != "") {
                 $query = $query."room='$room'";
             }
             else if($user != "" && $room != "") {
@@ -178,6 +178,15 @@ class Database {
             else {
                 $query = $query."1";
             }
+        }
+        if($date != "") {
+            if($expired == "true") {
+                $query = $query." AND date <= '$date'";
+            }
+            else if($expired == "false") {
+                $query = $query." AND date > '$date'";
+            }
+            
         }
         $result = $this->mysqli->query($query);
         $ret = $result->fetch_assoc();
@@ -299,7 +308,7 @@ class Database {
         return $ret;
     }
     
-    function getBookingList($user, $room, $like, $limit, $offset) {
+    function getBookingList($user, $room, $like, $limit, $offset, $date, $expired) {
         $query = "SELECT * FROM booking WHERE ";
         if($like) {
             if($user != "" && $room == "") {
@@ -328,6 +337,15 @@ class Database {
             else {
                 $query = $query."1";
             }
+        }
+        if($date != "") {
+            if($expired == "true") {
+                $query = $query." AND date <= '$date'";
+            }
+            else if($expired == "false") {
+                $query = $query." AND date > '$date'";
+            }
+            
         }
         $query = $query." LIMIT $offset, $limit";
         $result = $this->mysqli->query($query);
