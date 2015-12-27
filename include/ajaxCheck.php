@@ -46,6 +46,22 @@
         if($response) echo "<schedule>true</schedule>";
         else echo "<schedule>false</schedule>";
     }
+    if(isset($_POST["schedule"])) {
+        $arr = json_decode($_POST["schedule"]);
+        $schedule = new RoomSchedule($arr->room, $arr->day, $arr->course, $arr->start, $arr->end);
+        
+        if($db->isScheduleClash($schedule)) echo "<clash>true</clash>";
+        else {
+            $arr = json_decode($_POST["data"]);
+            $booking = new Booking($arr->id, $arr->room, $arr->user, $arr->course, $arr->start, $arr->end, $arr->date, $arr->type);
+            if($db->isBookingClash($booking)) {
+                echo "<clash>true</clash>";
+            }
+            else {
+                echo "<clash>false</clash>";
+            }
+        }
+    }
 
     echo "</data>";
     

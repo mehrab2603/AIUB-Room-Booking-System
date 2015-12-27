@@ -3,7 +3,7 @@
 -- http://www.phpmyadmin.net
 --
 -- Host: localhost
--- Generation Time: Dec 26, 2015 at 10:06 PM
+-- Generation Time: Dec 27, 2015 at 02:16 PM
 -- Server version: 5.5.46-0ubuntu0.14.04.2
 -- PHP Version: 5.5.9-1ubuntu4.14
 
@@ -19,6 +19,35 @@ SET time_zone = "+00:00";
 --
 -- Database: `final_project`
 --
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `booking`
+--
+
+CREATE TABLE IF NOT EXISTS `booking` (
+  `id` bigint(25) unsigned NOT NULL AUTO_INCREMENT,
+  `room` varchar(20) COLLATE utf8_bin NOT NULL,
+  `user` varchar(100) COLLATE utf8_bin NOT NULL,
+  `course` varchar(100) COLLATE utf8_bin NOT NULL,
+  `start` int(20) NOT NULL,
+  `end` int(20) NOT NULL,
+  `date` date NOT NULL,
+  `type` varchar(20) COLLATE utf8_bin NOT NULL,
+  PRIMARY KEY (`id`),
+  KEY `room` (`room`,`user`),
+  KEY `user` (`user`)
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8 COLLATE=utf8_bin AUTO_INCREMENT=14 ;
+
+--
+-- Dumping data for table `booking`
+--
+
+INSERT INTO `booking` (`id`, `room`, `user`, `course`, `start`, `end`, `date`, `type`) VALUES
+(11, '421', 'admin', 'CS Math', 1, 1, '2015-12-28', 'Make Up'),
+(12, 'CL6', 'test1', 'PL1 A', 1, 6, '2015-12-29', 'Make Up'),
+(13, '421', 'test2', 'PL4', 1, 2, '2015-12-27', 'Advance Make Up');
 
 -- --------------------------------------------------------
 
@@ -128,6 +157,14 @@ CREATE TABLE IF NOT EXISTS `schedule` (
   PRIMARY KEY (`room`,`day`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_bin;
 
+--
+-- Dumping data for table `schedule`
+--
+
+INSERT INTO `schedule` (`room`, `day`, `1`, `2`, `3`, `4`, `5`, `6`, `7`, `8`, `9`, `10`, `11`, `12`, `13`, `14`, `15`, `16`, `17`, `18`, `19`, `20`, `21`, `22`, `23`, `24`, `25`, `26`, `27`, `28`, `29`) VALUES
+('421', 'Saturday', '', '', 'PL1 B', 'PL1 B', '', '', 'PL2 A', 'PL2 A', 'PL2 A', 'PL2 A', 'PL2 A', 'PL2 A', 'PL2 B', 'PL2 B', 'PL2 B', 'PL2 B', 'PL2 B', 'PL2 B', '', '', 'CS Math', 'CS Math', 'CS Math', 'CS Math', '', '', '', '', ''),
+('422', 'Saturday', '', '', 'CS Math', 'CS Math', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '');
+
 -- --------------------------------------------------------
 
 --
@@ -162,6 +199,13 @@ INSERT INTO `user_info` (`username`, `fullname`, `id`, `position`, `department`,
 --
 -- Constraints for dumped tables
 --
+
+--
+-- Constraints for table `booking`
+--
+ALTER TABLE `booking`
+  ADD CONSTRAINT `booking_ibfk_2` FOREIGN KEY (`room`) REFERENCES `room` (`id`) ON DELETE CASCADE ON UPDATE CASCADE,
+  ADD CONSTRAINT `booking_ibfk_3` FOREIGN KEY (`user`) REFERENCES `login` (`username`) ON DELETE CASCADE ON UPDATE CASCADE;
 
 --
 -- Constraints for table `schedule`

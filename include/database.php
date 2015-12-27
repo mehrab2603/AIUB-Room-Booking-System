@@ -84,11 +84,16 @@ class Database {
         
         
         $result = $this->mysqli->query($query);
-        
         $row = $result->fetch_assoc();
         
-        foreach($row as $key => $value) {
-            if($value != "") return true;
+        if(is_array($row)) {
+            
+            foreach($row as $key => $value) {
+                if($value != "") {$result->free(); return true;}
+            }
+
+            $result->free();
+            return false;
         }
         return false;
     }
@@ -101,6 +106,34 @@ class Database {
         return false;
     }
     
+    function isBookingClash(Booking $booking) {
+        $id = $booking->getId();
+        $room = $booking->getRoom();
+        $user = $booking->getUser();
+        $course = $this->mysqli->real_escape_string($booking->getCourse());
+        $start = $booking->getStart();
+        $end = $booking->getEnd();
+        $date = $booking->getClassDate();
+        $type = $booking->getType();
+        
+        $result = $this->mysqli->query("SELECT start, end FROM booking WHERE date='$date' AND room='$room' AND id!='$id'");
+        
+        $arr = array();
+        
+        while($row = $result->fetch_assoc()) {
+            array_push($arr, $row["start"]);
+            array_push($arr, $row["end"]);
+        }
+        
+        for($i = $start; $i <= $end; $i++) {
+            if(in_array($i, $arr)) {$result->free(); return true;}
+        }
+        
+        $result->free();
+        return false;
+    }
+    
+    
     function getUserCount($username) {
         $username = $this->mysqli->real_escape_string($username);
         $result = $this->mysqli->query("SELECT COUNT(*) AS user_count FROM login WHERE username LIKE '%$username%'");
@@ -112,7 +145,45 @@ class Database {
         $id = $this->mysqli->real_escape_string($id);
         $result = $this->mysqli->query("SELECT COUNT(*) AS room_count FROM room WHERE id LIKE '%$id%'");
         $ret = $result->fetch_assoc();
+        $result->free();
         return $ret["room_count"];
+    }
+    
+    function getBookingCount($user, $room, $like) {
+        $query = "SELECT COUNT(*) as booking_count FROM booking WHERE ";
+        if($like) {
+            if($user == "" && $room != "") {
+                $query = $query."user LIKE '%$user%'";
+            }
+            else if($user != "" && $room == "") {
+                $query = $query."room LIKE '%$room%'";
+            }
+            else if($user != "" && $room != "") {
+                $query = $query."room LIKE '%$room%' AND user LIKE '%$user%'";
+            }
+            else {
+                $query = $query."1";
+            }
+        }
+        else {
+            if($user == "" && $room != "") {
+                $query = $query."user='$user'";
+            }
+            else if($user != "" && $room == "") {
+                $query = $query."room='$room'";
+            }
+            else if($user != "" && $room != "") {
+                $query = $query."room='$room' AND user='$user'";
+            }
+            else {
+                $query = $query."1";
+            }
+        }
+        $result = $this->mysqli->query($query);
+        $ret = $result->fetch_assoc();
+        $result->free();
+        return $ret["booking_count"];
+        
     }
     
     
@@ -170,6 +241,20 @@ class Database {
         return $result;
     }
     
+    function insertBooking(Booking $booking) {
+        $room = $booking->getRoom();
+        $user = $booking->getUser();
+        $course = $this->mysqli->real_escape_string($booking->getCourse());
+        $start = $booking->getStart();
+        $end = $booking->getEnd();
+        $date = $booking->getClassDate();
+        $type = $booking->getType();
+        
+        
+        $result = $this->mysqli->query("INSERT INTO booking(room, user, course, start, end, date, type) VALUES ('$room', '$user', '$course', '$start', '$end', '$date', '$type')");
+        return $result;
+    }
+    
     function getUser($username) {
         $username = $this->mysqli->real_escape_string($username);
         $result = $this->mysqli->query("SELECT login.*, user_info.fullname, user_info.id, user_info.position, user_info.department, user_info.phone, user_info.email FROM login LEFT JOIN user_info ON login.username = user_info.username WHERE login.username='$username'");
@@ -212,6 +297,47 @@ class Database {
         }
         $result->free();
         return $ret;
+    }
+    
+    function getBookingList($user, $room, $like, $limit, $offset) {
+        $query = "SELECT * FROM booking WHERE ";
+        if($like) {
+            if($user != "" && $room == "") {
+                $query = $query."user LIKE '%$user%'";
+            }
+            else if($user == "" && $room != "") {
+                $query = $query."room LIKE '%$room%'";
+            }
+            else if($user != "" && $room != "") {
+                $query = $query."room LIKE '%$room%' AND user LIKE '%$user%'";
+            }
+            else {
+                $query = $query."1";
+            }
+        }
+        else {
+            if($user != "" && $room == "") {
+                $query = $query."user='$user'";
+            }
+            else if($user == "" && $room != "") {
+                $query = $query."room='$room'";
+            }
+            else if($user != "" && $room != "") {
+                $query = $query."room='$room' AND user='$user'";
+            }
+            else {
+                $query = $query."1";
+            }
+        }
+        $query = $query." LIMIT $offset, $limit";
+        $result = $this->mysqli->query($query);
+        $ret = array();
+        while($row = $result->fetch_assoc()) {
+            array_push($ret, new Booking($row["id"], $row["room"], $row["user"], $row["course"], $row["start"], $row["end"], $row["date"], $row["type"]));
+        }
+        $result->free();
+        return $ret;
+        
     }
     
     function getScheduleList($room, $day) {
@@ -311,6 +437,21 @@ class Database {
         return $result;
     }
     
+    function updateBooking(Booking $booking) {
+        $id = $booking->getId();
+        $room = $booking->getRoom();
+        $user = $booking->getUser();
+        $course = $this->mysqli->real_escape_string($booking->getCourse());
+        $start = $booking->getStart();
+        $end = $booking->getEnd();
+        $date = $booking->getClassDate();
+        $type = $booking->getType();
+        
+        $result = $this->mysqli->query("UPDATE booking SET room='$room', user='$user', course='$course', start='$start', end='$end', date='$date', type='$type' WHERE id='$id'");
+        
+        return $result;
+    }
+    
     function deleteUser($username) {
         $result = $this->mysqli->query("DELETE FROM login WHERE username='$username'");
         return $result;
@@ -318,6 +459,11 @@ class Database {
     
     function deleteRoom($id) {
         $result = $this->mysqli->query("DELETE FROM room WHERE id='$id'");
+        return $result;
+    }
+    
+    function deleteBooking($id) {
+        $result = $this->mysqli->query("DELETE FROM booking WHERE id='$id'");
         return $result;
     }
     
