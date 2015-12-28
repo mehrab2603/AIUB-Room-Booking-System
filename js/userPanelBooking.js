@@ -23,18 +23,193 @@ function getBookingsContent() {
         };
         updateBookingList(0, pagination, bookingFilter.value); 
         
-//        $(".report-booking-modal-trigger").leanModal({
-//            dismissible: true, // Modal can be dismissed by clicking outside of the modal
-//            opacity: .5, // Opacity of modal background
-//            in_duration: 300, // Transition in duration
-//            out_duration: 200, // Transition out duration
-//            ready: function() { 
-//                loadBookingFormData("create-booking-room", "create-booking-user", "create-booking-button");
-//            }, // Callback for Modal open
-//            complete: function() { 
-//                document.getElementById("create-booking-form").reset();
-//            }
-//        });
+        $(".report-booking-modal-trigger").leanModal({
+            dismissible: true, // Modal can be dismissed by clicking outside of the modal
+            opacity: .5, // Opacity of modal background
+            in_duration: 300, // Transition in duration
+            out_duration: 200, // Transition out duration
+            ready: function() {
+                var reportContent = document.getElementById("report-content");
+                reportContent.innerHTML = "";
+                
+                var header = document.createElement("h5");
+                header.style.textAlign = "center";
+                header.innerHTML = "Room Booking Report of " + userInfo["username"];
+                
+                reportContent.appendChild(header);
+                reportContent.appendChild(document.createElement("hr"));
+                
+                var ajaxRequest = getXMLHTTPRequest();
+                ajaxRequest.open("POST", "include/ajaxBookingReport.php", true);
+                ajaxRequest.onreadystatechange = response;
+                ajaxRequest.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
+                
+                var dateValue = new Date();
+                dateValue.setHours(0, -dateValue.getTimezoneOffset(), 0, 0);
+                var date = dateValue.toISOString().slice(0, 10).replace('T', ' ');
+                
+                ajaxRequest.send("date=" + date + "&user=" + userInfo["username"]);
+                
+                function response() {
+                    if(ajaxRequest.readyState == 4 && ajaxRequest.status == 200) {
+                        var response = ajaxRequest.responseXML;
+                        var expiredBookings = response.getElementsByTagName("expired")[0].getElementsByTagName("booking");
+                        var validBookings = response.getElementsByTagName("valid")[0].getElementsByTagName("booking");
+                        
+                        var statisticsTable = document.createElement("table");
+                        statisticsTable.style.border = "1px solid black";
+                        
+                        statisticsTable.innerHTML = "<thead><tr><th colspan=\"2\" style=\"text-align:center;\">Statistics</th></tr></thead>";
+                        
+                        var statisticsTableBody = document.createElement("tbody");
+                        
+                        var totalRow = statisticsTableBody.insertRow(0);
+                        var totalTextCell = totalRow.insertCell(0);
+                        var totalValueCell = totalRow.insertCell(1);
+                        totalTextCell.innerHTML = "Total Bookings";
+                        totalValueCell.innerHTML = response.getElementsByTagName("total")[0].childNodes[0].nodeValue;
+                        
+                        var expiredRow = statisticsTableBody.insertRow(1);
+                        var expiredTextCell = expiredRow.insertCell(0);
+                        var expiredValueCell = expiredRow.insertCell(1);
+                        expiredTextCell.innerHTML = "Expired Bookings";
+                        expiredValueCell.innerHTML = response.getElementsByTagName("expiredCount")[0].childNodes[0].nodeValue;
+                        
+                        var validRow = statisticsTableBody.insertRow(2);
+                        var validTextCell = validRow.insertCell(0);
+                        var validValueCell = validRow.insertCell(1);
+                        validTextCell.innerHTML = "Valid Bookings";
+                        validValueCell.innerHTML = response.getElementsByTagName("validCount")[0].childNodes[0].nodeValue;
+                        
+                        statisticsTable.appendChild(statisticsTableBody);
+                        reportContent.appendChild(statisticsTable);
+                        
+                        if(expiredValueCell.innerHTML != "0") {
+                        
+                        var expiredTable = document.createElement("table");
+                        expiredTable.style.border = "1px solid black";
+                        
+                        expiredTable.innerHTML = "<thead><tr><th colspan=\"6\" style=\"text-align:center;\">Expired Bookings</th></tr><tr><th>Room</th><th>Date</th><th>Course</th><th>From</th><th>To</th><th>Type</th></tr></thead>";
+                        
+                        var expiredTableBody = document.createElement("tbody");
+                        
+                            for(var i = 0; i < expiredBookings.length; i++) {
+                                var room = expiredBookings[i].getElementsByTagName("room")[0].childNodes[0].nodeValue;
+                                var date = expiredBookings[i].getElementsByTagName("date")[0].childNodes[0].nodeValue;
+                                var course = expiredBookings[i].getElementsByTagName("course")[0].childNodes[0].nodeValue;
+                                var start = expiredBookings[i].getElementsByTagName("start")[0].childNodes[0].nodeValue;
+                                var end = expiredBookings[i].getElementsByTagName("end")[0].childNodes[0].nodeValue;
+                                var type = expiredBookings[i].getElementsByTagName("type")[0].childNodes[0].nodeValue;
+
+                                var row = expiredTableBody.insertRow(i);
+                                var roomCell = row.insertCell(0);
+                                var dateCell = row.insertCell(1);
+                                var courseCell = row.insertCell(2);
+                                var startCell = row.insertCell(3);
+                                var endCell = row.insertCell(4);
+                                var typeCell = row.insertCell(5);
+
+                                var newDate = new Date(date);
+
+                                roomCell.innerHTML = room;
+                                dateCell.innerHTML = newDate.toDateString();
+                                courseCell.innerHTML = course;
+                                startCell.innerHTML = timeBlock[start];
+                                endCell.innerHTML = timeBlock[parseInt(end) + 1];
+                                typeCell.innerHTML = type;
+
+                            }
+
+                            expiredTable.appendChild(expiredTableBody);
+                            reportContent.appendChild(expiredTable);
+                        }
+                        
+                        if(validValueCell.innerHTML != "0") {
+                        
+                            var validTable = document.createElement("table");
+                            validTable.style.border = "1px solid black";
+
+                            validTable.innerHTML = "<thead><tr><th colspan=\"6\" style=\"text-align:center;\">Valid Bookings</th></tr><tr><th>Room</th><th>Date</th><th>Course</th><th>From</th><th>To</th><th>Type</th></tr></thead>";
+
+                            var validTableBody = document.createElement("tbody");
+
+                            for(var i = 0; i < validBookings.length; i++) {
+                                var room = validBookings[i].getElementsByTagName("room")[0].childNodes[0].nodeValue;
+                                var date = validBookings[i].getElementsByTagName("date")[0].childNodes[0].nodeValue;
+                                var course = validBookings[i].getElementsByTagName("course")[0].childNodes[0].nodeValue;
+                                var start = validBookings[i].getElementsByTagName("start")[0].childNodes[0].nodeValue;
+                                var end = validBookings[i].getElementsByTagName("end")[0].childNodes[0].nodeValue;
+                                var type = validBookings[i].getElementsByTagName("type")[0].childNodes[0].nodeValue;
+
+                                var row = validTableBody.insertRow(i);
+                                var roomCell = row.insertCell(0);
+                                var dateCell = row.insertCell(1);
+                                var courseCell = row.insertCell(2);
+                                var startCell = row.insertCell(3);
+                                var endCell = row.insertCell(4);
+                                var typeCell = row.insertCell(5);
+
+                                var newDate = new Date(date);
+
+                                roomCell.innerHTML = room;
+                                dateCell.innerHTML = newDate.toDateString();
+                                courseCell.innerHTML = course;
+                                startCell.innerHTML = timeBlock[start];
+                                endCell.innerHTML = timeBlock[parseInt(end) + 1];
+                                typeCell.innerHTML = type;
+
+                            }
+
+                            validTable.appendChild(validTableBody);
+                            reportContent.appendChild(validTable);
+                            reportContent.appendChild(document.createElement("br"));
+                            
+                            var footer = document.createElement("div");
+                            footer.className = "row";
+                            
+                            var pdfButton = document.createElement("a");
+                            pdfButton.className = "waves-effect waves-light btn col s12";
+                            pdfButton.innerHTML = "Download Report";
+                            pdfButton.id = "download-button";
+                            
+                            pdfButton.onclick = function() {
+                                var doc = new jsPDF();          
+                                var elementHandler = {
+                                    '#download-button': function (element, renderer) {
+                                        return true;
+                                    }
+                                };
+                                
+                                var source = reportContent;
+                                doc.fromHTML(
+                                    source,
+                                    15,
+                                    15,
+                                    {
+                                        'width': 180,'elementHandlers': elementHandler
+                                    }
+                                );
+                                $("report-booking-modal").closeModal();
+
+                                doc.output("dataurlnewwindow");
+                                
+                                
+                            };
+                            
+                            footer.appendChild(pdfButton);
+                            reportContent.appendChild(footer);
+                            
+                        }
+                        
+                        
+                    }
+                }
+                
+            }, // Callback for Modal open
+            complete: function() { 
+                
+            }
+        });
         
         $('select').material_select();
         $('.datepicker').pickadate({

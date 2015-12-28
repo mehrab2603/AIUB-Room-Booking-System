@@ -122,7 +122,7 @@
             ?>
             <head>
                 <!--Import Google Icon Font-->
-                <link href="http://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+                <link type="text/css" rel="stylesheet" href="css/material_icons.css">
                 <!--Import materialize.css-->
                 <link type="text/css" rel="stylesheet" href="css/materialize.min.css"  media="screen,projection"/>
                 <!--Import styles.css-->
@@ -1144,7 +1144,7 @@
         protected function scripts() {
             ?>
             <!--Import jQuery before materialize.js-->
-            <script type="text/javascript" src="https://code.jquery.com/jquery-2.1.1.min.js"></script>
+            <script type="text/javascript" src="js/jquery-2.1.1.min.js"></script>
             <script type="text/javascript" src="js/materialize.min.js"></script>
             
             <script>
@@ -1247,6 +1247,7 @@
             <script type="text/javascript" src="js/adminPanelUser.js"></script>
             <script type="text/javascript" src="js/adminPanelSchedule.js"></script>
             <script type="text/javascript" src="js/adminPanelBooking.js"></script>
+            <script type="text/javascript" src="js/adminPanelLogout.js"></script>
 
             <?php
         }
@@ -1267,7 +1268,7 @@
             $this->navBarId = "user-nav";
             $this->contentId = "content-area";
             $this->logo = array("text" => "Logo", "image" => "", "url" => "#");
-            $this->options = array(new Option("Profile", "profile", "getProfileContent()"), new Option("Bookings", "bookings", "getBookingsContent()"), new Option("Report", "report", "getReportContent()"),  new Option("Logout", "logout", "getLogoutContent()"));
+            $this->options = array(new Option("Profile", "profile", "getProfileContent()"), new Option("Bookings", "bookings", "getBookingsContent()"), new Option("Logout", "logout", "getLogoutContent()"));
             $this->pagination = 5;
         }
         
@@ -1285,7 +1286,7 @@
             ?>
             <head>
                 <!--Import Google Icon Font-->
-                <link href="http://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+                <link type="text/css" rel="stylesheet" href="css/material_icons.css">
                 <!--Import materialize.css-->
                 <link type="text/css" rel="stylesheet" href="css/materialize.min.css"  media="screen,projection"/>
                 <!--Import styles.css-->
@@ -1337,8 +1338,13 @@
         protected function scripts() {
             ?>
             <!--Import jQuery before materialize.js-->
-            <script type="text/javascript" src="https://code.jquery.com/jquery-2.1.1.min.js"></script>
+            <script type="text/javascript" src="js/jquery-2.1.1.min.js"></script>
             <script type="text/javascript" src="js/materialize.min.js"></script>
+
+            <script type="text/javascript" src="js/jspdf.js"></script>
+            <script type="text/javascript" src="js/jspdf.plugin.from_html.js"></script>
+            <script type="text/javascript" src="js/jspdf.plugin.split_text_to_size.js"></script>
+            <script type="text/javascript" src="js/jspdf.plugin.standard_fonts_metrics.js"></script>
             
             <script>
                 var pagination = "<?php echo $this->pagination; ?>";
@@ -1449,6 +1455,7 @@
             </script>
             <script type="text/javascript" src="js/userPanelProfile.js"></script>
             <script type="text/javascript" src="js/userPanelBooking.js"></script>
+            <script type="text/javascript" src="js/userPanelLogout.js"></script>
 
 
             <?php

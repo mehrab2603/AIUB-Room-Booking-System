@@ -6,110 +6,110 @@ function showEditUser(user) {
     ajaxRequest.send("user=" + user + "&single=true");
     
     function response() {
-            if(ajaxRequest.readyState == 4 && ajaxRequest.status == 200) {
-                $('#update-user-modal').openModal();
-                
-                var response = ajaxRequest.responseXML;
-                var currentUser = response.getElementsByTagName("user")[0];
-                
-                
-                var username = document.getElementById("edit-username");
-                var password = document.getElementById("edit-password");
-                var fullname = document.getElementById("edit-full-name");
-                var id = document.getElementById("edit-id");
-                var position = document.getElementById("edit-position");
-                var department = document.getElementById("edit-department");
-                var email = document.getElementById("edit-email");
-                var phone = document.getElementById("edit-phone");
-                var typeUser = document.getElementById("edit-type-user");
-                var typeAdmin = document.getElementById("edit-type-admin");
-                var save = document.getElementById("edit-save-button");
-                
-                username.className = "valid";
-                password.className = "valid";
-                fullname.className = "valid";
-                id.className = "valid";
-                email.className = "validate valid";
-                phone.className = "valid";
-                
-                var oldFullname = currentUser.childNodes[2].childNodes[0].nodeValue;
-                var oldId = currentUser.childNodes[3].childNodes[0].nodeValue;
-                var oldEmail = currentUser.childNodes[7].childNodes[0].nodeValue;
-                var oldPhone = currentUser.childNodes[6].childNodes[0].nodeValue;
-                
-                fullname.onchange = function() {validateFullname("edit-full-name", "edit-full-name-label", fullname.value, oldFullname);};
-                id.onchange = function() {validateId("edit-id", "edit-id-label", oldId);};
-                email.onchange = function() {validateEmail("edit-email", "edit-email-label", oldEmail);};
-                phone.onchange = function() {validatePhone("edit-phone", "edit-phone-label", oldPhone);};
-                
-                username.value = currentUser.childNodes[0].childNodes[0].nodeValue;
-                fullname.value = currentUser.childNodes[2].childNodes[0].nodeValue;
-                id.value = currentUser.childNodes[3].childNodes[0].nodeValue;
-                
-                for(var i = 0; i < position.length; i++) {
-                    if(position.options[i].text == currentUser.childNodes[4].childNodes[0].nodeValue) {
-                        position.selectedIndex = i;
-                        $('select').material_select();
-                        break;
-                    }
-                }
-                for(var i = 0; i < department.length; i++) {
-                    if(department.options[i].text == currentUser.childNodes[5].childNodes[0].nodeValue) {
-                        department.selectedIndex = i;
-                        $('select').material_select();
-                        break;
-                    }
-                }
-                phone.value = currentUser.childNodes[6].childNodes[0].nodeValue;
-                email.value = currentUser.childNodes[7].childNodes[0].nodeValue;
-                currentUser.childNodes[8].childNodes[0].nodeValue == "admin" ? typeAdmin.checked = true : typeUser.checked = true;
-                
-                save.onclick = function() {
-                    if(username.className == "valid" && fullname.className == "valid" && email.className == "validate valid" && id.className == "valid" && phone.className == "valid") {
-                        var data = {
-                            username : username.value,
-                            password : password.value,
-                            fullname : fullname.value,
-                            id : id.value,
-                            phone : phone.value,
-                            email : email.value,
-                            position : position.options[position.selectedIndex].text,
-                            department : department.options[department.selectedIndex].text,
-                            type : document.getElementById("edit-type-user").checked ? "user" : "admin"
-                        }
-                        
-                        
-                        ajaxRequest = getXMLHTTPRequest();
-                        ajaxRequest.open("POST", "include/ajaxUpdateUser.php", true);
-                        ajaxRequest.onreadystatechange = response2;
-                        ajaxRequest.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
-                        ajaxRequest.send("data=" + JSON.stringify(data));
+        if(ajaxRequest.readyState == 4 && ajaxRequest.status == 200) {
+            $('#update-user-modal').openModal();
 
-                        function response2() {
-                            if(ajaxRequest.readyState == 4 && ajaxRequest.status == 200) {
-                                if(ajaxRequest.responseText == "true") {
-                                    document.getElementById("update-user-form").reset();
-                                    
-                                    updateUserList(currentUserPage, pagination, document.getElementById("search-user").value);
+            var response = ajaxRequest.responseXML;
+            var currentUser = response.getElementsByTagName("user")[0];
 
-                                    $('#update-user-modal').closeModal();
-                                    Materialize.toast('User modified successfully!', 2000);
-                                }
-                                else {
-                                    Materialize.toast('Failed to modify user!', 2000);
-                                }
+
+            var username = document.getElementById("edit-username");
+            var password = document.getElementById("edit-password");
+            var fullname = document.getElementById("edit-full-name");
+            var id = document.getElementById("edit-id");
+            var position = document.getElementById("edit-position");
+            var department = document.getElementById("edit-department");
+            var email = document.getElementById("edit-email");
+            var phone = document.getElementById("edit-phone");
+            var typeUser = document.getElementById("edit-type-user");
+            var typeAdmin = document.getElementById("edit-type-admin");
+            var save = document.getElementById("edit-save-button");
+
+            username.className = "valid";
+            password.className = "valid";
+            fullname.className = "valid";
+            id.className = "valid";
+            email.className = "validate valid";
+            phone.className = "valid";
+
+            var oldFullname = currentUser.childNodes[2].childNodes[0].nodeValue;
+            var oldId = currentUser.childNodes[3].childNodes[0].nodeValue;
+            var oldEmail = currentUser.childNodes[7].childNodes[0].nodeValue;
+            var oldPhone = currentUser.childNodes[6].childNodes[0].nodeValue;
+
+            fullname.onchange = function() {validateFullname("edit-full-name", "edit-full-name-label", fullname.value, oldFullname);};
+            id.onchange = function() {validateId("edit-id", "edit-id-label", oldId);};
+            email.onchange = function() {validateEmail("edit-email", "edit-email-label", oldEmail);};
+            phone.onchange = function() {validatePhone("edit-phone", "edit-phone-label", oldPhone);};
+
+            username.value = currentUser.childNodes[0].childNodes[0].nodeValue;
+            fullname.value = currentUser.childNodes[2].childNodes[0].nodeValue;
+            id.value = currentUser.childNodes[3].childNodes[0].nodeValue;
+
+            for(var i = 0; i < position.length; i++) {
+                if(position.options[i].text == currentUser.childNodes[4].childNodes[0].nodeValue) {
+                    position.selectedIndex = i;
+                    $('select').material_select();
+                    break;
+                }
+            }
+            for(var i = 0; i < department.length; i++) {
+                if(department.options[i].text == currentUser.childNodes[5].childNodes[0].nodeValue) {
+                    department.selectedIndex = i;
+                    $('select').material_select();
+                    break;
+                }
+            }
+            phone.value = currentUser.childNodes[6].childNodes[0].nodeValue;
+            email.value = currentUser.childNodes[7].childNodes[0].nodeValue;
+            currentUser.childNodes[8].childNodes[0].nodeValue == "admin" ? typeAdmin.checked = true : typeUser.checked = true;
+
+            save.onclick = function() {
+                if(username.className == "valid" && fullname.className == "valid" && email.className == "validate valid" && id.className == "valid" && phone.className == "valid") {
+                    var data = {
+                        username : username.value,
+                        password : password.value,
+                        fullname : fullname.value,
+                        id : id.value,
+                        phone : phone.value,
+                        email : email.value,
+                        position : position.options[position.selectedIndex].text,
+                        department : department.options[department.selectedIndex].text,
+                        type : document.getElementById("edit-type-user").checked ? "user" : "admin"
+                    }
+
+
+                    ajaxRequest = getXMLHTTPRequest();
+                    ajaxRequest.open("POST", "include/ajaxUpdateUser.php", true);
+                    ajaxRequest.onreadystatechange = response2;
+                    ajaxRequest.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
+                    ajaxRequest.send("data=" + JSON.stringify(data));
+
+                    function response2() {
+                        if(ajaxRequest.readyState == 4 && ajaxRequest.status == 200) {
+                            if(ajaxRequest.responseText == "true") {
+                                document.getElementById("update-user-form").reset();
+
+                                updateUserList(currentUserPage, pagination, document.getElementById("search-user").value);
+
+                                $('#update-user-modal').closeModal();
+                                Materialize.toast('User modified successfully!', 2000);
+                            }
+                            else {
+                                Materialize.toast('Failed to modify user!', 2000);
                             }
                         }
                     }
-                    else {
-                        alert("Please fix the errors");
-                    }
-                    
                 }
-                
-                
+                else {
+                    alert("Please fix the errors");
+                }
+
             }
+
+
         }
+    }
     
     
 }
