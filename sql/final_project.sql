@@ -3,7 +3,7 @@
 -- http://www.phpmyadmin.net
 --
 -- Host: localhost
--- Generation Time: Dec 27, 2015 at 02:16 PM
+-- Generation Time: Dec 28, 2015 at 09:34 AM
 -- Server version: 5.5.46-0ubuntu0.14.04.2
 -- PHP Version: 5.5.9-1ubuntu4.14
 
@@ -38,7 +38,7 @@ CREATE TABLE IF NOT EXISTS `booking` (
   PRIMARY KEY (`id`),
   KEY `room` (`room`,`user`),
   KEY `user` (`user`)
-) ENGINE=InnoDB  DEFAULT CHARSET=utf8 COLLATE=utf8_bin AUTO_INCREMENT=14 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8 COLLATE=utf8_bin AUTO_INCREMENT=18 ;
 
 --
 -- Dumping data for table `booking`
@@ -46,8 +46,11 @@ CREATE TABLE IF NOT EXISTS `booking` (
 
 INSERT INTO `booking` (`id`, `room`, `user`, `course`, `start`, `end`, `date`, `type`) VALUES
 (11, '421', 'admin', 'CS Math', 1, 1, '2015-12-28', 'Make Up'),
-(12, 'CL6', 'test1', 'PL1 A', 1, 6, '2015-12-29', 'Make Up'),
-(13, '421', 'test2', 'PL4', 1, 2, '2015-12-27', 'Advance Make Up');
+(13, '421', 'admin', 'PL4', 1, 2, '2015-12-27', 'Advance Make Up'),
+(14, '421', 'admin', 'PL3 B', 3, 4, '2015-12-27', 'Advance Make Up'),
+(15, '421', 'admin', 'PL9', 2, 2, '2015-12-28', 'Make Up'),
+(16, '422', 'admin', 'AOS', 1, 1, '2015-12-28', 'Make Up'),
+(17, 'CL6', 'admin', 'Database', 1, 6, '2015-12-29', 'Advance Make Up');
 
 -- --------------------------------------------------------
 
@@ -67,13 +70,14 @@ CREATE TABLE IF NOT EXISTS `login` (
 --
 
 INSERT INTO `login` (`username`, `hash`, `type`) VALUES
-('admin', '$2y$10$idGEb9G8YxAlZ8yXJlFT1uyl2nh/KEZDlxlV315iDf284HL5ODCSK', 'admin'),
-('test1', '$2y$10$jzlkua.I6BdRSNoWOkuh5ecSFRz6hgd6NXE3ibg8kXENt12dLMu5K', 'admin'),
-('test2', '$2y$10$dr4ag1kK/pY1IyUhnet2fu9dUw.dy1270vposhQuNBqMyZGBvRegq', 'user'),
+('admin', '$2y$10$G5Q73mPFyeVjJ9JmHdSYK.Z2g9uAG9tgviM6.lindNWUm1yQ32qPm', 'admin'),
+('test1', '$2y$10$.JgIwGWL4cVdqQHg8mdZTOhKq0WO6oHlppZKHXWLlYs91dhKjWtEi', 'admin'),
+('test2', '$2y$10$jVgy11h2/TxlmVKPhRCNz.bXl9U4H.tBbMVBWsaIuC/RIue/I0aDO', 'user'),
 ('test3', '$2y$10$cUAqsi86tIuHU6GgtNfTy.lQiEIWOOullMlI7YiC0l2LXT6h7NeWG', 'user'),
 ('test4', '$2y$10$7ZwcLsxsYl/a3oOVplSx6.lwr50qxyr2sCKzlGO.V5qVzUeAz5mW2', 'user'),
 ('test5', '$2y$10$836v8tETocNC8PBwRO1eCefTPkiakgJmLULvg90uXRJCvXnFUo2IS', 'user'),
-('test6', '$2y$10$K7TZoYMzicjVqsZ1/T25HOWRRVgtgadbqSV8NY/QwhCIbKjwVgfGS', 'user');
+('test6', '$2y$10$K7TZoYMzicjVqsZ1/T25HOWRRVgtgadbqSV8NY/QwhCIbKjwVgfGS', 'user'),
+('test7', '$2y$10$Avtw4zHoAd/qecyetDrxmOtvQK0n/V8ieRxff9xjMHgUB1nina9C.', 'user');
 
 -- --------------------------------------------------------
 
@@ -188,13 +192,14 @@ CREATE TABLE IF NOT EXISTS `user_info` (
 --
 
 INSERT INTO `user_info` (`username`, `fullname`, `id`, `position`, `department`, `phone`, `email`) VALUES
-('admin', 'Mehrab', '13-23396-1', 'Other', 'Other', '01752141395', 'mehrab2603@yahoo.com'),
+('admin', 'HM Mehrab', '13-23396-1', 'Other', 'Other', '01752141395', 'mehrab2603@yahoo.com'),
 ('test1', 'Adnan', '13-20086-1', 'Other', 'Other', '01752141090', 'mehrab2603@ya0o2o.com'),
 ('test2', 'Hasan Tanvir', '13-23396-2', 'Part Timer', 'Arts and Social Sciences', '01752141397', 'mehrab2603@yahoo.com2'),
 ('test3', 'Ananta Jalil', '13-23396-4', 'Part Timer', 'Arts and Social Sciences', '12345234234', 'mehrab2603@b.c'),
 ('test4', 'Shabab', '13-23397-1', 'Part Timer', 'Arts and Social Sciences', '01752141325', 'mehrab2603@yahoo.com4'),
 ('test5', 'Ayon', '13-23396-5', 'Professor', 'Science and Information Technology', '123452342349', 'mehrab2603@yahoo.c8m'),
-('test6', 'Kishor', '13-24396-1', 'Part Timer', 'Arts and Social Sciences', '01752141295', 'mehrab2603@yaho2.com');
+('test6', 'Kishor', '13-24396-1', 'Part Timer', 'Arts and Social Sciences', '01752141295', 'mehrab2603@yaho2.com'),
+('test7', 'Sadiqul Amin', '13-23385-1', 'Other', 'Other', '01752141396', 'mehrab2603@yahoo.comasddas');
 
 --
 -- Constraints for dumped tables
