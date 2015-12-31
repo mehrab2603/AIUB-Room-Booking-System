@@ -84,8 +84,7 @@ function getRoomScheduleContent(room, day) {
                "            </thead><tbody id=\"schedule-list-table-body\"></tbody>" +
                "        </table>" +
                "    </div>" +
-               "    <div id=\"schedule-pagination-area\"></div>" +
-               "</div>";
+               "    <div id=\"schedule-pagination-area\"></div>";
     
     
     content.innerHTML = temp;

@@ -1,6 +1,6 @@
 function getProfileContent() {
     
-    $("#" + contentId).load(htmlContent + "profile.html", function() {
+    $("#" + contentId).load(htmlContent + "user_profile.html", function() {
         document.getElementById("username-cell").innerHTML = userInfo["username"];
         document.getElementById("password-cell").innerHTML = "*****";
         document.getElementById("fullname-cell").innerHTML = userInfo["fullname"];

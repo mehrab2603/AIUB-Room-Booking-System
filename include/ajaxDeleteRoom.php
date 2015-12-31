@@ -3,7 +3,7 @@
 
     $db = new Database();
 
-    $ret = $db->deleteRoom($_POST["room"]);
+    $ret = $db->deleteRoom($_POST["id"]);
 
     if($ret) echo "true";
     else echo "false";

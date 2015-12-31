@@ -141,58 +141,209 @@ class Database {
         return $ret["user_count"];
     }
     
-    function getRoomCount($id) {
-        $id = $this->mysqli->real_escape_string($id);
-        $result = $this->mysqli->query("SELECT COUNT(*) AS room_count FROM room WHERE id LIKE '%$id%'");
+    function getRoomCount($room, $like) {
+        $id = $this->mysqli->real_escape_string($room->getId()); 
+        $floor = $this->mysqli->real_escape_string($room->getFloor());  
+        $campus = $this->mysqli->real_escape_string($room->getCampus());
+        $capacity = $this->mysqli->real_escape_string($room->getCapacity());  
+        $type = $this->mysqli->real_escape_string($room->getType()); 
+        
+        $query = "SELECT COUNT(*) AS room_count FROM room WHERE";
+        
+        if($room) {
+            if($like) {
+                $hasPrevious = false;
+                if($id) {
+                    if($hasPrevious) $query = $query." AND";
+                    else $hasPrevious = true;
+                    $query = $query." id LIKE '%$id%'";
+                }
+                if($floor) {
+                    if($hasPrevious) $query = $query." AND";
+                    else $hasPrevious = true;
+                    $query = $query." floor LIKE '%$floor%'";
+                }
+                if($campus) {
+                    if($hasPrevious) $query = $query." AND";
+                    else $hasPrevious = true;
+                    $query = $query." campus LIKE '%$campus%'";
+                }
+                if($capacity) {
+                    if($hasPrevious) $query = $query." AND";
+                    else $hasPrevious = true;
+                    $query = $query." capacity LIKE '%$capacity%'";
+                }
+                if($type) {
+                    if($hasPrevious) $query = $query." AND";
+                    else $hasPrevious = true;
+                    $query = $query." type LIKE '%$type%'";
+                }
+                if(!$hasPrevious) $query = $query." 1";
+            }
+            else {
+                $hasPrevious = false;
+                if($id) {
+                    if($hasPrevious) $query = $query." AND";
+                    else $hasPrevious = true;
+                    $query = $query." id='$id'";
+                }
+                if($floor) {
+                    if($hasPrevious) $query = $query." AND";
+                    else $hasPrevious = true;
+                    $query = $query." floor='$floor'";
+                }
+                if($campus) {
+                    if($hasPrevious) $query = $query." AND";
+                    else $hasPrevious = true;
+                    $query = $query." campus='$campus'";
+                }
+                if($capacity) {
+                    if($hasPrevious) $query = $query." AND";
+                    else $hasPrevious = true;
+                    $query = $query." capacity='$capacity'";
+                }
+                if($type) {
+                    if($hasPrevious) $query = $query." AND";
+                    else $hasPrevious = true;
+                    $query = $query." type='$type'";
+                }
+                if(!$hasPrevious) $query = $query." 1";
+            }
+        }
+        else {
+            $query = $query." 1";
+        }
+        
+        $result = $this->mysqli->query($query);
+        
         $ret = $result->fetch_assoc();
         $result->free();
         return $ret["room_count"];
     }
     
-    function getBookingCount($user, $room, $like, $date, $expired) {
-        $query = "SELECT COUNT(*) as booking_count FROM booking WHERE ";
+    function getBookingCount($booking, $like, $dateRange, $expired) {
+        $room = $this->mysqli->real_escape_string($booking->getRoom());
+        $user = $this->mysqli->real_escape_string($booking->getUser());
+        $course = $this->mysqli->real_escape_string($booking->getCourse());
+        $start = $this->mysqli->real_escape_string($booking->getStart());
+        $end = $this->mysqli->real_escape_string($booking->getEnd());
+        $date = $this->mysqli->real_escape_string($booking->getClassDate());
+        $type = $this->mysqli->real_escape_string($booking->getType());
+        
+        $query = "SELECT COUNT(*) as booking_count FROM booking WHERE";
+        
         if($like) {
-            if($user != "" && $room == "") {
-                $query = $query."user LIKE '%$user%'";
+            $hasPrevious = false;
+            if($room) {
+                if($hasPrevious) $query = $query." AND";
+                else $hasPrevious = true;
+                $query = $query." room LIKE '%$room%'";
             }
-            else if($user == "" && $room != "") {
-                $query = $query."room LIKE '%$room%'";
+            if($user) {
+                if($hasPrevious) $query = $query." AND";
+                else $hasPrevious = true;
+                $query = $query." user LIKE '%$user%'";
             }
-            else if($user != "" && $room != "") {
-                $query = $query."room LIKE '%$room%' AND user LIKE '%$user%'";
+            if($course) {
+                if($hasPrevious) $query = $query." AND";
+                else $hasPrevious = true;
+                $query = $query." course LIKE '%$course%'";
             }
-            else {
-                $query = $query."1";
+            if($start) {
+                if($hasPrevious) $query = $query." AND";
+                else $hasPrevious = true;
+                $query = $query." start >= '$start'";
             }
-        }
-        else {
-            if($user != "" && $room == "") {
-                $query = $query."user='$user'";
+            if($end) {
+                if($hasPrevious) $query = $query." AND";
+                else $hasPrevious = true;
+                $query = $query." end <= '$end'";
             }
-            else if($user == "" && $room != "") {
-                $query = $query."room='$room'";
+            if($type) {
+                if($hasPrevious) $query = $query." AND";
+                else $hasPrevious = true;
+                $query = $query." type='$type'";
             }
-            else if($user != "" && $room != "") {
-                $query = $query."room='$room' AND user='$user'";
+            if(isset($expired)) {
+                if($expired == "true") {
+                    if($hasPrevious) $query = $query." AND";
+                    else $hasPrevious = true;
+                    $query = $query." date <= '$date'";
+                }
+                else if($expired == "false") {
+                    if($hasPrevious) $query = $query." AND";
+                    else $hasPrevious = true;
+                    $query = $query." date > '$date'";
+                }
             }
-            else {
-                $query = $query."1";
-            }
-        }
-        if($date != "") {
-            if($expired == "true") {
-                $query = $query." AND date <= '$date'";
-            }
-            else if($expired == "false") {
-                $query = $query." AND date > '$date'";
+            else if($dateRange) {
+                if($hasPrevious) $query = $query." AND";
+                else $hasPrevious = true;
+                $query = $query." date >= '".$dateRange[0]."' AND date <= '".$dateRange[1]."'";
             }
             
+            if(!$hasPrevious) $query = $query." 1";
         }
-        $result = $this->mysqli->query($query);
-        $ret = $result->fetch_assoc();
-        $result->free();
-        return $ret["booking_count"];
+        else {
+            $hasPrevious = false;
+            if($room) {
+                if($hasPrevious) $query = $query." AND";
+                else $hasPrevious = true;
+                $query = $query." room='$room'";
+            }
+            if($user) {
+                if($hasPrevious) $query = $query." AND";
+                else $hasPrevious = true;
+                $query = $query." user='$user'";
+            }
+            if($course) {
+                if($hasPrevious) $query = $query." AND";
+                else $hasPrevious = true;
+                $query = $query." course='$course'";
+            }
+            if($start) {
+                if($hasPrevious) $query = $query." AND";
+                else $hasPrevious = true;
+                $query = $query." start>='$start'";
+            }
+            if($end) {
+                if($hasPrevious) $query = $query." AND";
+                else $hasPrevious = true;
+                $query = $query." end<='$end'";
+            }
+            if($type) {
+                if($hasPrevious) $query = $query." AND";
+                else $hasPrevious = true;
+                $query = $query." type='$type'";
+            }
+            if(isset($expired)) {
+                if($expired == "true") {
+                    if($hasPrevious) $query = $query." AND";
+                    else $hasPrevious = true;
+                    $query = $query." date <= '$date'";
+                }
+                else if($expired == "false") {
+                    if($hasPrevious) $query = $query." AND";
+                    else $hasPrevious = true;
+                    $query = $query." date > '$date'";
+                }
+            }
+            else if($dateRange) {
+                if($hasPrevious) $query = $query." AND";
+                else $hasPrevious = true;
+                $query = $query." date >= '".$dateRange[0]."' AND date <= '".$dateRange[1]."'";
+            }
+            if(!$hasPrevious) $query = $query." 1";
+        }
         
+        $result = $this->mysqli->query($query);
+        if($result) {
+            
+            $ret = $result->fetch_assoc();
+            $result->free();
+
+            return $ret["booking_count"];   
+        }
     }
     
     
@@ -295,65 +446,244 @@ class Database {
         return $ret;
     }
     
-    function getRoomList($id, $limit, $offset) {
-        $id = $this->mysqli->real_escape_string($id);
-        $result = $this->mysqli->query("SELECT * FROM room WHERE id LIKE '%$id%' LIMIT $offset, $limit");
+    function getRoomList($room, $limit, $offset, $order, $like) {
+        $id = $this->mysqli->real_escape_string($room->getId()); 
+        $floor = $this->mysqli->real_escape_string($room->getFloor());  
+        $campus = $this->mysqli->real_escape_string($room->getCampus());
+        $capacity = $this->mysqli->real_escape_string($room->getCapacity());  
+        $type = $this->mysqli->real_escape_string($room->getType()); 
         
-        $ret = array();    
-        
-        while($row = $result->fetch_assoc()) {
-            array_push($ret, new Room($row["id"], $row["floor"], $row["campus"], $row["capacity"], $row["type"]));
-        }
-        $result->free();
-        return $ret;
-    }
-    
-    function getBookingList($user, $room, $like, $limit, $offset, $date, $expired) {
-        $query = "SELECT * FROM booking WHERE ";
-        if($like) {
-            if($user != "" && $room == "") {
-                $query = $query."user LIKE '%$user%'";
-            }
-            else if($user == "" && $room != "") {
-                $query = $query."room LIKE '%$room%'";
-            }
-            else if($user != "" && $room != "") {
-                $query = $query."room LIKE '%$room%' AND user LIKE '%$user%'";
+        $query = "SELECT * FROM room WHERE";
+        if($room) {
+            if($like) {
+                $hasPrevious = false;
+                if($id) {
+                    if($hasPrevious) $query = $query." AND";
+                    else $hasPrevious = true;
+                    $query = $query." id LIKE '%$id%'";
+                }
+                if($floor) {
+                    if($hasPrevious) $query = $query." AND";
+                    else $hasPrevious = true;
+                    $query = $query." floor LIKE '%$floor%'";
+                }
+                if($campus) {
+                    if($hasPrevious) $query = $query." AND";
+                    else $hasPrevious = true;
+                    $query = $query." campus LIKE '%$campus%'";
+                }
+                if($capacity) {
+                    if($hasPrevious) $query = $query." AND";
+                    else $hasPrevious = true;
+                    $query = $query." capacity LIKE '%$capacity%'";
+                }
+                if($type) {
+                    if($hasPrevious) $query = $query." AND";
+                    else $hasPrevious = true;
+                    $query = $query." type LIKE '%$type%'";
+                }
+                if(!$hasPrevious) $query = $query." 1";
             }
             else {
-                $query = $query."1";
+                $hasPrevious = false;
+                if($id) {
+                    if($hasPrevious) $query = $query." AND";
+                    else $hasPrevious = true;
+                    $query = $query." id='$id'";
+                }
+                if($floor) {
+                    if($hasPrevious) $query = $query." AND";
+                    else $hasPrevious = true;
+                    $query = $query." floor='$floor'";
+                }
+                if($campus) {
+                    if($hasPrevious) $query = $query." AND";
+                    else $hasPrevious = true;
+                    $query = $query." campus='$campus'";
+                }
+                if($capacity) {
+                    if($hasPrevious) $query = $query." AND";
+                    else $hasPrevious = true;
+                    $query = $query." capacity='$capacity'";
+                }
+                if($type) {
+                    if($hasPrevious) $query = $query." AND";
+                    else $hasPrevious = true;
+                    $query = $query." type='$type'";
+                }
+                if(!$hasPrevious) $query = $query." 1";
             }
         }
         else {
-            if($user != "" && $room == "") {
-                $query = $query."user='$user'";
-            }
-            else if($user == "" && $room != "") {
-                $query = $query."room='$room'";
-            }
-            else if($user != "" && $room != "") {
-                $query = $query."room='$room' AND user='$user'";
-            }
-            else {
-                $query = $query."1";
-            }
+            $query = $query." 1";
         }
-        if($date != "") {
-            if($expired == "true") {
-                $query = $query." AND date <= '$date'";
-            }
-            else if($expired == "false") {
-                $query = $query." AND date > '$date'";
+        if($order) {
+            $query = $query." ORDER BY";
+            $orderCount = count($order);
+            $i = 0;
+            foreach($order as $field => $direction) {
+                $query = $query." $field $direction";
+                $i++;
+                if($i < $orderCount) $query = $query.",";
             }
             
         }
-        $query = $query." LIMIT $offset, $limit";
+        if($limit && isset($offset)) {
+            $query = $query." LIMIT $offset, $limit";
+        }
+        
+        
+        $result = $this->mysqli->query($query);
+        
+        $ret = array();
+        
+        if($result) {
+            while($row = $result->fetch_assoc()) {
+                array_push($ret, new Room($row["id"], $row["floor"], $row["campus"], $row["capacity"], $row["type"]));
+            }
+            $result->free();
+        }
+        
+        return $ret;
+    }
+    
+    function getBookingList($booking, $limit, $offset, $dateRange, $expired, $order, $like) {
+        $room = $this->mysqli->real_escape_string($booking->getRoom());
+        $user = $this->mysqli->real_escape_string($booking->getUser());
+        $course = $this->mysqli->real_escape_string($booking->getCourse());
+        $start = $this->mysqli->real_escape_string($booking->getStart());
+        $end = $this->mysqli->real_escape_string($booking->getEnd());
+        $date = $this->mysqli->real_escape_string($booking->getClassDate());
+        $type = $this->mysqli->real_escape_string($booking->getType());
+        
+        
+        $query = "SELECT * FROM booking WHERE";
+        if($like) {
+            $hasPrevious = false;
+            if($room) {
+                if($hasPrevious) $query = $query." AND";
+                else $hasPrevious = true;
+                $query = $query." room LIKE '%$room%'";
+            }
+            if($user) {
+                if($hasPrevious) $query = $query." AND";
+                else $hasPrevious = true;
+                $query = $query." user LIKE '%$user%'";
+            }
+            if($course) {
+                if($hasPrevious) $query = $query." AND";
+                else $hasPrevious = true;
+                $query = $query." course LIKE '%$course%'";
+            }
+            if($start) {
+                if($hasPrevious) $query = $query." AND";
+                else $hasPrevious = true;
+                $query = $query." start >= '$start'";
+            }
+            if($end) {
+                if($hasPrevious) $query = $query." AND";
+                else $hasPrevious = true;
+                $query = $query." end <= '$end'";
+            }
+            if($type) {
+                if($hasPrevious) $query = $query." AND";
+                else $hasPrevious = true;
+                $query = $query." type='$type'";
+            }
+            if(isset($expired)) {
+                if($expired == "true") {
+                    if($hasPrevious) $query = $query." AND";
+                    else $hasPrevious = true;
+                    $query = $query." date <= '$date'";
+                }
+                else if($expired == "false") {
+                    if($hasPrevious) $query = $query." AND";
+                    else $hasPrevious = true;
+                    $query = $query." date > '$date'";
+                }
+            }
+            else if($dateRange) {
+                if($hasPrevious) $query = $query." AND";
+                else $hasPrevious = true;
+                $query = $query." date >= '".$dateRange[0]."' AND date <= '".$dateRange[1]."'";
+            }
+            
+            if(!$hasPrevious) $query = $query." 1";
+        }
+        else {
+            $hasPrevious = false;
+            if($room) {
+                if($hasPrevious) $query = $query." AND";
+                else $hasPrevious = true;
+                $query = $query." room='$room'";
+            }
+            if($user) {
+                if($hasPrevious) $query = $query." AND";
+                else $hasPrevious = true;
+                $query = $query." user='$user'";
+            }
+            if($course) {
+                if($hasPrevious) $query = $query." AND";
+                else $hasPrevious = true;
+                $query = $query." course='$course'";
+            }
+            if($start) {
+                if($hasPrevious) $query = $query." AND";
+                else $hasPrevious = true;
+                $query = $query." start>='$start'";
+            }
+            if($end) {
+                if($hasPrevious) $query = $query." AND";
+                else $hasPrevious = true;
+                $query = $query." end<='$end'";
+            }
+            if($type) {
+                if($hasPrevious) $query = $query." AND";
+                else $hasPrevious = true;
+                $query = $query." type='$type'";
+            }
+            if(isset($expired)) {
+                if($expired == "true") {
+                    if($hasPrevious) $query = $query." AND";
+                    else $hasPrevious = true;
+                    $query = $query." date <= '$date'";
+                }
+                else if($expired == "false") {
+                    if($hasPrevious) $query = $query." AND";
+                    else $hasPrevious = true;
+                    $query = $query." date > '$date'";
+                }
+            }
+            else if($dateRange) {
+                if($hasPrevious) $query = $query." AND";
+                else $hasPrevious = true;
+                $query = $query." date >= '".$dateRange[0]."' AND date <= '".$dateRange[1]."'";
+            }
+            if(!$hasPrevious) $query = $query." 1";
+        }
+        if($order) {
+            $query = $query." ORDER BY";
+            $orderCount = count($order);
+            $i = 0;
+            foreach($order as $field => $direction) {
+                $query = $query." $field $direction";
+                $i++;
+                if($i < $orderCount) $query = $query.",";
+            }   
+        }
+        
+        if($limit && isset($offset)) {
+            $query = $query." LIMIT $offset, $limit";
+        }
+        
         $result = $this->mysqli->query($query);
         $ret = array();
-        while($row = $result->fetch_assoc()) {
-            array_push($ret, new Booking($row["id"], $row["room"], $row["user"], $row["course"], $row["start"], $row["end"], $row["date"], $row["type"]));
+        if($result) {
+            while($row = $result->fetch_assoc()) {
+                array_push($ret, new Booking($row["id"], $row["room"], $row["user"], $row["course"], $row["start"], $row["end"], $row["date"], $row["type"]));
+            }
+            $result->free();
         }
-        $result->free();
         return $ret;
         
     }

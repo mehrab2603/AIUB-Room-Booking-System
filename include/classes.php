@@ -380,143 +380,6 @@
                     </div>
                 </div>
 
-
-                <div id="create-room-modal" class="modal">
-                    <div class="modal-content">
-                        <div class="row">
-                            <h5 id="create-room-header">Create Room</h5>
-                            <form id="create-room-form">
-                                
-                                
-                                <div class="row">
-                                    <div class="input-field col s12">
-                                        <input type="text" id="room-id" maxlength="20" placeholder="Maximum 20 alphanumeric character or hyphen or space" required>
-                                        <label for="room-id" id="room-id-label">Room ID</label>
-                                    </div>
-                                </div>
-                                
-                                <div class="row">
-                                    <div class="input-field col s12">
-                                        <input type="text" id="room-floor" maxlength="10" placeholder="Only numeric characters" required>
-                                        <label for="room-floor" id="room-floor-label">Floor</label>
-                                    </div>
-                                </div>
-                                
-                                <div class="row">
-                                    <div class="input-field col s12">
-                                        <input type="text" id="room-campus" maxlength="10" placeholder="Only numeric characters" required>
-                                        <label for="room-campus" id="room-campus-label">Campus</label>
-                                    </div>
-                                </div>
-                                
-                                <div class="row">
-                                    <div class="input-field col s12">
-                                        <input type="text" id="room-capacity" maxlength="10" placeholder="Only numeric characters" required>
-                                        <label for="room-capacity" id="room-capacity-label">Capacity</label>
-                                    </div>
-                                </div>
-                                
-                                <div class="row">
-                                    <div class="input-field col s12">
-                                        <select id="room-type" required>
-                                            <option value="1" selected>Theory</option>
-                                            <option value="2">Lab(Computer)</option>
-                                            <option value="3">Lab(Electronics)</option>
-                                            <option value="4">Lab(Natural Science)</option>
-                                            <option value="5">Other</option>
-                                        </select>
-                                        <label for="room-type" id="room-type-label" data-error="Error">Type</label>
-                                    </div>
-                                </div>
-                                
-                                
-
-
-                                <div class="row right">
-                                    <button class="btn waves-effect waves-light red" type="button" onclick="$('#create-room-modal').closeModal();">Cancel</button>
-                                    <button class="btn waves-effect waves-light" type="button" id="create-room-button">Create</button>
-                                    
-                                </div>
-                            </form>
-                        </div>
-                    </div>
-                </div>
-
-                <div id="update-room-modal" class="modal">
-                    <div class="modal-content">
-                        <div class="row">
-                            <h5 id="update-room-header">Edit Room</h5>
-                            <form id="update-room-form">
-                                
-                                
-                                <div class="row">
-                                    <div class="input-field col s12">
-                                        <input type="text" id="update-room-id" maxlength="20" placeholder="Maximum 20 alphanumeric character or hyphen or space" required>
-                                        <label for="update-room-id" id="update-room-id-label">Room ID</label>
-                                    </div>
-                                </div>
-                                
-                                <div class="row">
-                                    <div class="input-field col s12">
-                                        <input type="text" id="update-room-floor" maxlength="10" placeholder="Only numeric characters" required>
-                                        <label for="update-room-floor" id="update-room-floor-label">Floor</label>
-                                    </div>
-                                </div>
-                                
-                                <div class="row">
-                                    <div class="input-field col s12">
-                                        <input type="text" id="update-room-campus" maxlength="10" placeholder="Only numeric characters" required>
-                                        <label for="update-room-campus" id="update-room-campus-label">Campus</label>
-                                    </div>
-                                </div>
-                                
-                                <div class="row">
-                                    <div class="input-field col s12">
-                                        <input type="text" id="update-room-capacity" maxlength="10" placeholder="Only numeric characters" required>
-                                        <label for="update-room-capacity" id="update-room-capacity-label">Capacity</label>
-                                    </div>
-                                </div>
-                                
-                                <div class="row">
-                                    <div class="input-field col s12">
-                                        <select id="update-room-type" required>
-                                            <option value="1" selected>Theory</option>
-                                            <option value="2">Lab(Computer)</option>
-                                            <option value="3">Lab(Electronics)</option>
-                                            <option value="4">Lab(Natural Science)</option>
-                                            <option value="5">Other</option>
-                                        </select>
-                                        <label for="update-room-type" id="update-room-type-label" data-error="Error">Type</label>
-                                    </div>
-                                </div>
-                                
-                                
-
-
-                                <div class="row right">
-                                    <button class="btn waves-effect waves-light red" type="button" onclick="$('#update-room-modal').closeModal();">Cancel</button>
-                                    <button class="btn waves-effect waves-light" type="button" id="update-room-save-button">Save</button>
-                                    
-                                </div>
-                            </form>
-                        </div>
-                    </div>
-                </div>
-
-                <div id="delete-room-modal" class="modal">
-                    <div class="modal-content">
-                        <div class="row">
-                            <h5 id="delete-room-header">Delete Room</h5>
-                            <span>Are you sure? All information, including class booking information, related to this room will be deleted permanently.</span>
-                        </div>
-                        <div class="row right">
-                                <button class="btn waves-effect waves-light red" type="button" onclick="$('#delete-room-modal').closeModal();">No</button>
-                                <button id="room-delete-yes-button" class="btn waves-effect waves-light" type="button">Yes</button>
-
-                        </div>
-                    </div>
-                </div>
-
                 
                 <div id="create-schedule-modal" class="modal">
                     <div class="modal-content">
@@ -748,314 +611,6 @@
                     </div>
                 </div>
 
-
-
-                <div id="create-booking-modal" class="modal">
-                    <div class="modal-content">
-                        <div class="row">
-                            <h5 id="create-booking-header">Create Booking</h5>
-                            <form id="create-booking-form">
-                                
-                                <div class="row">
-                                    <div class="input-field col s12">
-                                        <select id="create-booking-room" required>
-                                            
-                                        </select>
-                                        <label for="create-booking-room" id="create-booking-room-label" data-error="Error">Room</label>
-                                    </div>
-                                </div>
-                                
-                                <div class="row">
-                                    <div class="input-field col s12">
-                                        <select id="create-booking-user" required>
-                                            
-                                        </select>
-                                        <label for="create-booking-user" id="create-booking-user-label" data-error="Error">User</label>
-                                    </div>
-                                </div>
-                                
-                                <div class="row">
-                                    <div class="input-field col s12">
-                                        <input type="text" id="create-booking-course" maxlength="20" placeholder="Maximum 20 alphanumeric character or hyphen or space" required>
-                                        <label for="create-booking-course" id="create-booking-course-label">Course</label>
-                                    </div>
-                                </div>
-                                
-                                <div class="row">
-                                    <div class="input-field col s12">
-                                        <select id="create-booking-start" required>
-                                            <option value="1" selected>8:00 AM</option>
-                                            <option value="2">8:30 AM</option>
-                                            <option value="3">9:00 AM</option>
-                                            <option value="4">9:30 AM</option>
-                                            <option value="5">10:00 AM</option>
-                                            <option value="6">10:30 AM</option>
-                                            <option value="7">11:00 AM</option>
-                                            <option value="8">11:30 AM</option>
-                                            <option value="9">12:00 PM</option>
-                                            <option value="10">12:30 PM</option>
-                                            <option value="11">1:00 PM</option>
-                                            <option value="12">1:30 PM</option>
-                                            <option value="13">2:00 PM</option>
-                                            <option value="14">2:30 PM</option>
-                                            <option value="15">3:00 PM</option>
-                                            <option value="16">3:30 PM</option>
-                                            <option value="17">4:00 PM</option>
-                                            <option value="18">4:30 PM</option>
-                                            <option value="19">5:00 PM</option>
-                                            <option value="20">5:30 PM</option>
-                                            <option value="21">6:00 PM</option>
-                                            <option value="22">6:30 PM</option>
-                                            <option value="23">7:00 PM</option>
-                                            <option value="24">7:30 PM</option>
-                                            <option value="25">8:00 PM</option>
-                                            <option value="26">8:30 PM</option>
-                                            <option value="27">9:00 PM</option>
-                                            <option value="28">9:30 PM</option>
-                                            
-                                        </select>
-                                        <label for="create-booking-start" id="create-booking-start-label" data-error="Error">From</label>
-                                    </div>
-                                </div>
-                                
-                                <div class="row">
-                                    <div class="input-field col s12">
-                                        <select id="create-booking-end" required>
-                                            <option value="2" selected>8:30 AM</option>
-                                            <option value="3">9:00 AM</option>
-                                            <option value="4">9:30 AM</option>
-                                            <option value="5">10:00 AM</option>
-                                            <option value="6">10:30 AM</option>
-                                            <option value="7">11:00 AM</option>
-                                            <option value="8">11:30 AM</option>
-                                            <option value="9">12:00 PM</option>
-                                            <option value="10">12:30 PM</option>
-                                            <option value="11">1:00 PM</option>
-                                            <option value="12">1:30 PM</option>
-                                            <option value="13">2:00 PM</option>
-                                            <option value="14">2:30 PM</option>
-                                            <option value="15">3:00 PM</option>
-                                            <option value="16">3:30 PM</option>
-                                            <option value="17">4:00 PM</option>
-                                            <option value="18">4:30 PM</option>
-                                            <option value="19">5:00 PM</option>
-                                            <option value="20">5:30 PM</option>
-                                            <option value="21">6:00 PM</option>
-                                            <option value="22">6:30 PM</option>
-                                            <option value="23">7:00 PM</option>
-                                            <option value="24">7:30 PM</option>
-                                            <option value="25">8:00 PM</option>
-                                            <option value="26">8:30 PM</option>
-                                            <option value="27">9:00 PM</option>
-                                            <option value="28">9:30 PM</option>
-                                            <option value="29">10:00 PM</option>
-                                            
-                                        </select>
-                                        <label for="create-booking-end" id="create-booking-end-label" data-error="Error">To</label>
-                                    </div>
-                                </div>
-                                
-                                <div class="row">
-                                    <div class="input-field col s12">
-                                        <input type="date" class="datepicker" id="create-booking-date" required>
-                                        <label for="create-booking-date" id="create-booking-date-label">Date</label>
-                                    </div>
-                                </div>
-                                <div class="row">
-                                    <div class="col s1">
-                                        <span>Type</span>
-                                    </div>
-                                    <div class="col s5">
-                                        <div class="row">
-                                            <div class="col s12">
-                                                <input class="with-gap" name="create-booking-type" type="radio" id="create-booking-type-makeup" checked="checked"/>
-                                                <label for="create-booking-type-makeup">Make Up</label>
-                                            </div>
-                                            <div class="col s12">
-                                                <input class="with-gap" name="create-booking-type" type="radio" id="create-booking-type-advanced-makeup" />
-                                                <label for="create-booking-type-advanced-makeup">Advance Make Up</label>
-                                            </div>
-                                            <div class="col s12">
-                                                <input class="with-gap" name="create-booking-type" type="radio" id="create-booking-type-other" />
-                                                <label for="create-booking-type-other">Other</label>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                                
-
-
-                                <div class="row right">
-                                    <button class="btn waves-effect waves-light red" type="button" onclick="$('#create-booking-modal').closeModal();">Cancel</button>
-                                    <button class="btn waves-effect waves-light disabled" type="button" id="create-booking-button">Create</button>
-                                    
-                                </div>
-                            </form>
-                        </div>
-                    </div>
-                </div>
-
-                <div id="edit-booking-modal" class="modal">
-                    <div class="modal-content">
-                        <div class="row">
-                            <h5 id="edit-booking-header">Edit Booking</h5>
-                            <form id="edit-booking-form">
-                                
-                                <div class="row">
-                                    <div class="input-field col s12">
-                                        <select id="edit-booking-room" required>
-                                            
-                                        </select>
-                                        <label for="edit-booking-room" id="edit-booking-room-label" data-error="Error">Room</label>
-                                    </div>
-                                </div>
-                                
-                                <div class="row">
-                                    <div class="input-field col s12">
-                                        <select id="edit-booking-user" required>
-                                            
-                                        </select>
-                                        <label for="edit-booking-user" id="edit-booking-user-label" data-error="Error">User</label>
-                                    </div>
-                                </div>
-                                
-                                <div class="row">
-                                    <div class="input-field col s12">
-                                        <input type="text" id="edit-booking-course" maxlength="20" placeholder="Maximum 20 alphanumeric character or hyphen or space" required>
-                                        <label for="edit-booking-course" id="edit-booking-course-label">Course</label>
-                                    </div>
-                                </div>
-                                
-                                <div class="row">
-                                    <div class="input-field col s12">
-                                        <select id="edit-booking-start" required>
-                                            <option value="1" selected>8:00 AM</option>
-                                            <option value="2">8:30 AM</option>
-                                            <option value="3">9:00 AM</option>
-                                            <option value="4">9:30 AM</option>
-                                            <option value="5">10:00 AM</option>
-                                            <option value="6">10:30 AM</option>
-                                            <option value="7">11:00 AM</option>
-                                            <option value="8">11:30 AM</option>
-                                            <option value="9">12:00 PM</option>
-                                            <option value="10">12:30 PM</option>
-                                            <option value="11">1:00 PM</option>
-                                            <option value="12">1:30 PM</option>
-                                            <option value="13">2:00 PM</option>
-                                            <option value="14">2:30 PM</option>
-                                            <option value="15">3:00 PM</option>
-                                            <option value="16">3:30 PM</option>
-                                            <option value="17">4:00 PM</option>
-                                            <option value="18">4:30 PM</option>
-                                            <option value="19">5:00 PM</option>
-                                            <option value="20">5:30 PM</option>
-                                            <option value="21">6:00 PM</option>
-                                            <option value="22">6:30 PM</option>
-                                            <option value="23">7:00 PM</option>
-                                            <option value="24">7:30 PM</option>
-                                            <option value="25">8:00 PM</option>
-                                            <option value="26">8:30 PM</option>
-                                            <option value="27">9:00 PM</option>
-                                            <option value="28">9:30 PM</option>
-                                            
-                                        </select>
-                                        <label for="edit-booking-start" id="edit-booking-start-label" data-error="Error">From</label>
-                                    </div>
-                                </div>
-                                
-                                <div class="row">
-                                    <div class="input-field col s12">
-                                        <select id="edit-booking-end" required>
-                                            <option value="2" selected>8:30 AM</option>
-                                            <option value="3">9:00 AM</option>
-                                            <option value="4">9:30 AM</option>
-                                            <option value="5">10:00 AM</option>
-                                            <option value="6">10:30 AM</option>
-                                            <option value="7">11:00 AM</option>
-                                            <option value="8">11:30 AM</option>
-                                            <option value="9">12:00 PM</option>
-                                            <option value="10">12:30 PM</option>
-                                            <option value="11">1:00 PM</option>
-                                            <option value="12">1:30 PM</option>
-                                            <option value="13">2:00 PM</option>
-                                            <option value="14">2:30 PM</option>
-                                            <option value="15">3:00 PM</option>
-                                            <option value="16">3:30 PM</option>
-                                            <option value="17">4:00 PM</option>
-                                            <option value="18">4:30 PM</option>
-                                            <option value="19">5:00 PM</option>
-                                            <option value="20">5:30 PM</option>
-                                            <option value="21">6:00 PM</option>
-                                            <option value="22">6:30 PM</option>
-                                            <option value="23">7:00 PM</option>
-                                            <option value="24">7:30 PM</option>
-                                            <option value="25">8:00 PM</option>
-                                            <option value="26">8:30 PM</option>
-                                            <option value="27">9:00 PM</option>
-                                            <option value="28">9:30 PM</option>
-                                            <option value="29">10:00 PM</option>
-                                            
-                                        </select>
-                                        <label for="edit-booking-end" id="edit-booking-end-label" data-error="Error">To</label>
-                                    </div>
-                                </div>
-                                
-                                <div class="row">
-                                    <div class="input-field col s12">
-                                        <input type="date" class="datepicker" id="edit-booking-date" required>
-                                        <label for="edit-booking-date" id="edit-booking-date-label">Date</label>
-                                    </div>
-                                </div>
-                                
-                                <div class="row">
-                                    <div class="col s1">
-                                        <span>Type</span>
-                                    </div>
-                                    <div class="col s5">
-                                        <div class="row">
-                                            <div class="col s12">
-                                                <input class="with-gap" name="edit-booking-type" type="radio" id="edit-booking-type-makeup" checked="checked"/>
-                                                <label for="edit-booking-type-makeup">Make Up</label>
-                                            </div>
-                                            <div class="col s12">
-                                                <input class="with-gap" name="edit-booking-type" type="radio" id="edit-booking-type-advanced-makeup" />
-                                                <label for="edit-booking-type-advanced-makeup">Advance Make Up</label>
-                                            </div>
-                                            <div class="col s12">
-                                                <input class="with-gap" name="edit-booking-type" type="radio" id="edit-booking-type-other" />
-                                                <label for="edit-booking-type-other">Other</label>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                                
-
-
-                                <div class="row right">
-                                    <button class="btn waves-effect waves-light red" type="button" onclick="$('#edit-booking-modal').closeModal();">Cancel</button>
-                                    <button class="btn waves-effect waves-light disabled" type="button" id="edit-booking-button">Save</button>
-                                    
-                                </div>
-                            </form>
-                        </div>
-                    </div>
-                </div>
-
-                <div id="delete-booking-modal" class="modal">
-                    <div class="modal-content">
-                        <div class="row">
-                            <h5 id="delete-booking-header">Delete Booking</h5>
-                            <span>Are you sure? All information related to this booking will be deleted permanently.</span>
-                        </div>
-                        <div class="row right">
-                                <button class="btn waves-effect waves-light red" type="button" onclick="$('#delete-booking-modal').closeModal();">No</button>
-                                <button id="delete-booking-yes-button" class="btn waves-effect waves-light" type="button">Yes</button>
-
-                        </div>
-                    </div>
-                </div>
-
-
                 
             <?php
         }
@@ -1187,6 +742,7 @@
                 var content = document.getElementById(<?php echo "\"".$this->contentId."\""; ?>);
                 var contentId = <?php echo "\"".$this->contentId."\""; ?>;
                 var htmlContent = "html/";
+                var phpContent = "include/";
                 var timeBlock = {
                     1 : "8:00 AM",
                     2 : "8:30 AM",
@@ -1248,6 +804,7 @@
             <script type="text/javascript" src="js/adminPanelSchedule.js"></script>
             <script type="text/javascript" src="js/adminPanelBooking.js"></script>
             <script type="text/javascript" src="js/adminPanelLogout.js"></script>
+            <script type="text/javascript" src="js/adminPanelReport.js"></script>
 
             <?php
         }
@@ -1268,7 +825,7 @@
             $this->navBarId = "user-nav";
             $this->contentId = "content-area";
             $this->logo = array("text" => "Logo", "image" => "", "url" => "#");
-            $this->options = array(new Option("Profile", "profile", "getProfileContent()"), new Option("Bookings", "bookings", "getBookingsContent()"), new Option("Logout", "logout", "getLogoutContent()"));
+            $this->options = array(new Option("Profile", "profile", "getProfileContent()"), new Option("Bookings", "bookings", "getBookingsContent()"), new Option("Room Status", "room-status", "getRoomStatusContent()"), new Option("Logout", "logout", "getLogoutContent()"));
             $this->pagination = 5;
         }
         
@@ -1386,6 +943,8 @@
                 var content = document.getElementById(<?php echo "\"".$this->contentId."\""; ?>);
                 var contentId = <?php echo "\"".$this->contentId."\""; ?>;
                 var htmlContent = "html/";
+                var phpContent = "include/";
+                
                 var timeBlock = {
                     1 : "8:00 AM",
                     2 : "8:30 AM",
@@ -1456,8 +1015,7 @@
             <script type="text/javascript" src="js/userPanelProfile.js"></script>
             <script type="text/javascript" src="js/userPanelBooking.js"></script>
             <script type="text/javascript" src="js/userPanelLogout.js"></script>
-
-
+            <script type="text/javascript" src="js/userPanelRoomStatus.js"></script>
             <?php
         }
     }

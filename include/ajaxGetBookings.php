@@ -11,23 +11,38 @@
     $bookingPerPage = isset($_POST["bookingPerPage"]) ? intval($_POST["bookingPerPage"]) : null;
     if(!isset($bookingPerPage)) $bookingPerPage = isset($_COOKIE["bookingPerPage"]) ? intval($_COOKIE["bookingPerPage"]) : 15;
 
-
     $page = isset($_POST["page"]) ? intval($_POST["page"]) : 0;
-    $room = isset($_POST["room"]) ? $_POST["room"] : "";
-    $user = isset($_POST["user"]) ? $_POST["user"] : "";
+    $room = isset($_POST["room"]) ? $_POST["room"] : null;
+    $user = isset($_POST["user"]) ? $_POST["user"] : null;
+    $course = isset($_POST["course"]) ? $_POST["course"] : null;
+    $start = isset($_POST["start"]) ? $_POST["start"] : null;
+    $end = isset($_POST["end"]) ? $_POST["end"] : null;
+    $date = isset($_POST["date"]) ? $_POST["date"] : null;
+    $type = isset($_POST["type"]) ? $_POST["type"] : null;
     $like = isset($_POST["like"]) ? true : false;
+    $expired = isset($_POST["expired"]) ? $_POST["expired"] : null;
+    $order = isset($_POST["order"]) ? json_decode($_POST["order"]) : null;
+    $dateRange = isset($_POST["dateRange"]) ? json_decode($_POST["dateRange"]) : null;
 
-    $date =  isset($_POST["date"]) ? $_POST["date"] : "";
-    $expired = isset($_POST["expired"]) ? $_POST["expired"] : "";
+    $orderProcessed = array();
+    if($order) {
+        foreach($order as $o) {
+            $orderProcessed[$o[0]] = $o[1]; 
+        }
+    }
+    else {
+        $orderProcessed = null;
+    }
 
-    $bookingCount = $db->getBookingCount($user, $room, $like, $date, $expired);
+
+    $bookingCount = $db->getBookingCount(new Booking(-1, $room, $user, $course, $start, $end, $date, $type), $like, $dateRange, $expired);
 
     $pageRequired = ceil($bookingCount / $bookingPerPage);
 
     if($page >= $pageRequired) $page = $pageRequired - 1;
     else if($page < 0) $page = 0;
 
-    $ret = $db->getBookingList($user, $room, $like, $bookingPerPage, $page * $bookingPerPage, $date, $expired);
+    $ret = $db->getBookingList(new Booking(-1, $room, $user, $course, $start, $end, $date, $type), $bookingPerPage, $page * $bookingPerPage, $dateRange, $expired, $orderProcessed, $like);
 
 
     echo "<pageRequired>".$pageRequired."</pageRequired>";

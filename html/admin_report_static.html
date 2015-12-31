@@ -1,0 +1,107 @@
+<div class="row">
+    <div class="col s12"><h4>Reports<h4><hr /></div>
+        <div class="col s12" >
+            <form id="report-form">
+                <table class="responsive-table">
+                    <tr>
+                        <td>Room</td>
+                        <td><select id="report-room-select" required></select></td>
+                    </tr>
+                    <tr>
+                        <td>User</td>
+                        <td><select id="report-user-select" required></select></td>
+                    </tr>
+                    <tr>
+                        <td>Course</td>
+                        <td>
+                            <input type="text" id="report-course" maxlength="100" placeholder="Leave empty to search all courses" />
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>Start Time</td>
+                        <td>
+                            <select id="report-start-time">
+                                <option value="1" selected>Any</option>
+                                <option value="1">8:00 AM</option>
+                                <option value="2">8:30 AM</option>
+                                <option value="3">9:00 AM</option>
+                                <option value="4">9:30 AM</option>
+                                <option value="5">10:00 AM</option>
+                                <option value="6">10:30 AM</option>
+                                <option value="7">11:00 AM</option>
+                                <option value="8">11:30 AM</option>
+                                <option value="9">12:00 PM</option>
+                                <option value="10">12:30 PM</option>
+                                <option value="11">1:00 PM</option>
+                                <option value="12">1:30 PM</option>
+                                <option value="13">2:00 PM</option>
+                                <option value="14">2:30 PM</option>
+                                <option value="15">3:00 PM</option>
+                                <option value="16">3:30 PM</option>
+                                <option value="17">4:00 PM</option>
+                                <option value="18">4:30 PM</option>
+                                <option value="19">5:00 PM</option>
+                                <option value="20">5:30 PM</option>
+                                <option value="21">6:00 PM</option>
+                                <option value="22">6:30 PM</option>
+                                <option value="23">7:00 PM</option>
+                                <option value="24">7:30 PM</option>
+                                <option value="25">8:00 PM</option>
+                                <option value="26">8:30 PM</option>
+                                <option value="27">9:00 PM</option>
+                                <option value="28">9:30 PM</option>
+                            </select>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>End Time</td>
+                        <td>
+                            <select id="report-end-time">
+                                <option value="29" selected>Any</option>
+                                <option value="2">8:30 AM</option>
+                                <option value="3">9:00 AM</option>
+                                <option value="4">9:30 AM</option>
+                                <option value="5">10:00 AM</option>
+                                <option value="6">10:30 AM</option>
+                                <option value="7">11:00 AM</option>
+                                <option value="8">11:30 AM</option>
+                                <option value="9">12:00 PM</option>
+                                <option value="10">12:30 PM</option>
+                                <option value="11">1:00 PM</option>
+                                <option value="12">1:30 PM</option>
+                                <option value="13">2:00 PM</option>
+                                <option value="14">2:30 PM</option>
+                                <option value="15">3:00 PM</option>
+                                <option value="16">3:30 PM</option>
+                                <option value="17">4:00 PM</option>
+                                <option value="18">4:30 PM</option>
+                                <option value="19">5:00 PM</option>
+                                <option value="20">5:30 PM</option>
+                                <option value="21">6:00 PM</option>
+                                <option value="22">6:30 PM</option>
+                                <option value="23">7:00 PM</option>
+                                <option value="24">7:30 PM</option>
+                                <option value="25">8:00 PM</option>
+                                <option value="26">8:30 PM</option>
+                                <option value="27">9:00 PM</option>
+                                <option value="28">9:30 PM</option>
+                                <option value="29">10:00 PM</option>
+                            </select>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>Start Date</td>
+                        <td><input type="date" id="report-start-date" required></td>
+                    </tr>
+                    <tr>
+                        <td>End Date</td>
+                        <td><input type="date" id="report-end-date" required></td>
+                    </tr>
+
+                </table>
+            </form>
+        </div>
+        <div class="col s12">
+            <button data-target="report-modal" class="btn col s12 waves-effect waves-light report-modal-trigger disabled">Generate Report</button>
+        </div>
+</div>

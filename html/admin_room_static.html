@@ -1,0 +1,250 @@
+<div class="row">
+   <div class="col s12"><h4>Rooms<h4><hr /></div>
+   <div class="col s12">
+       <button data-target="create-room-modal" class="btn col s12 waves-effect waves-light create-room-modal-trigger">Create Room</button>
+   </div>
+   <div class="col s12" >
+       <table id="room-list-table" class="responsive-table striped">
+           <thead>
+               <tr><th colspan="4">Room List</th></tr>
+               <tr>
+                   <th data-field="id">ID</th>
+                   <th data-field="floor">Floor</th>
+                   <th data-field="campus">Campus</th>
+                   <th data-field="capacity">Capacity</th>
+                   <th data-field="type">Type</th>
+                   <th data-field="option"></th>
+               </tr>
+           </thead><tbody id="room-list-table-body"></tbody>
+       </table>
+   </div>
+   <div id="room-footer-area">
+        <div class="left">
+            <a class="waves-effect waves-light btn search-room-modal-trigger" id="room-search-button" data-target="search-room-modal">Search</a>
+            <a class="waves-effect waves-light btn sort-room-modal-trigger" id="room-sort-button" data-target="sort-room-modal">Sort</a>
+            <a class="waves-effect waves-light btn" id="room-reset-button" >Reset</a>
+        </div>
+        <div class="right" id="room-pagination-area">
+        </div>
+    </div>
+</div>
+       
+<div id="create-room-modal" class="modal">
+    <div class="modal-content">
+        <div class="row">
+            <h5 id="create-room-header">Create Room</h5>
+            <form id="create-room-form">
+
+
+                <div class="row">
+                    <div class="input-field col s12">
+                        <input type="text" id="room-id" maxlength="20" placeholder="Maximum 20 alphanumeric character or hyphen or space" required>
+                        <label for="room-id" id="room-id-label">Room ID</label>
+                    </div>
+                </div>
+
+                <div class="row">
+                    <div class="input-field col s12">
+                        <input type="text" id="room-floor" maxlength="10" placeholder="Only numeric characters" required>
+                        <label for="room-floor" id="room-floor-label">Floor</label>
+                    </div>
+                </div>
+
+                <div class="row">
+                    <div class="input-field col s12">
+                        <input type="text" id="room-campus" maxlength="10" placeholder="Only numeric characters" required>
+                        <label for="room-campus" id="room-campus-label">Campus</label>
+                    </div>
+                </div>
+
+                <div class="row">
+                    <div class="input-field col s12">
+                        <input type="text" id="room-capacity" maxlength="10" placeholder="Only numeric characters" required>
+                        <label for="room-capacity" id="room-capacity-label">Capacity</label>
+                    </div>
+                </div>
+
+                <div class="row">
+                    <div class="input-field col s12">
+                        <select id="room-type" required>
+                            <option value="1" selected>Theory</option>
+                            <option value="2">Lab(Computer)</option>
+                            <option value="3">Lab(Electronics)</option>
+                            <option value="4">Lab(Natural Science)</option>
+                            <option value="5">Other</option>
+                        </select>
+                        <label for="room-type" id="room-type-label" data-error="Error">Type</label>
+                    </div>
+                </div>
+
+
+
+
+                <div class="row right">
+                    <button class="btn waves-effect waves-light red" type="button" onclick="$('#create-room-modal').closeModal();">Cancel</button>
+                    <button class="btn waves-effect waves-light" type="button" id="create-room-button">Create</button>
+
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+       
+
+<div id="update-room-modal" class="modal">
+    <div class="modal-content">
+        <div class="row">
+            <h5 id="update-room-header">Edit Room</h5>
+            <form id="update-room-form">
+
+
+                <div class="row">
+                    <div class="input-field col s12">
+                        <input type="text" id="update-room-id" maxlength="20" placeholder="Maximum 20 alphanumeric character or hyphen or space" required>
+                        <label for="update-room-id" id="update-room-id-label">Room ID</label>
+                    </div>
+                </div>
+
+                <div class="row">
+                    <div class="input-field col s12">
+                        <input type="text" id="update-room-floor" maxlength="10" placeholder="Only numeric characters" required>
+                        <label for="update-room-floor" id="update-room-floor-label">Floor</label>
+                    </div>
+                </div>
+
+                <div class="row">
+                    <div class="input-field col s12">
+                        <input type="text" id="update-room-campus" maxlength="10" placeholder="Only numeric characters" required>
+                        <label for="update-room-campus" id="update-room-campus-label">Campus</label>
+                    </div>
+                </div>
+
+                <div class="row">
+                    <div class="input-field col s12">
+                        <input type="text" id="update-room-capacity" maxlength="10" placeholder="Only numeric characters" required>
+                        <label for="update-room-capacity" id="update-room-capacity-label">Capacity</label>
+                    </div>
+                </div>
+
+                <div class="row">
+                    <div class="input-field col s12">
+                        <select id="update-room-type" required>
+                            <option value="1" selected>Theory</option>
+                            <option value="2">Lab(Computer)</option>
+                            <option value="3">Lab(Electronics)</option>
+                            <option value="4">Lab(Natural Science)</option>
+                            <option value="5">Other</option>
+                        </select>
+                        <label for="update-room-type" id="update-room-type-label" data-error="Error">Type</label>
+                    </div>
+                </div>
+
+
+
+
+                <div class="row right">
+                    <button class="btn waves-effect waves-light red" type="button" onclick="$('#update-room-modal').closeModal();">Cancel</button>
+                    <button class="btn waves-effect waves-light" type="button" id="update-room-save-button">Save</button>
+
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+       
+
+<div id="search-room-modal" class="modal">
+    <div class="modal-content">
+        <div class="row">
+            <h5 id="search-room-header">Search Room</h5>
+            <form id="search-room-form">
+
+
+                <div class="row">
+                    <div class="input-field col s12">
+                        <input type="text" id="search-room-id" maxlength="20" placeholder="Leave blank to search for all rooms">
+                        <label for="search-room-id" id="search-room-id-label">Room ID</label>
+                    </div>
+                </div>
+
+                <div class="row">
+                    <div class="input-field col s12">
+                        <input type="text" id="search-room-floor" maxlength="10" placeholder="Leave blank to search for all floors">
+                        <label for="search-room-floor" id="search-room-floor-label">Floor</label>
+                    </div>
+                </div>
+
+                <div class="row">
+                    <div class="input-field col s12">
+                        <input type="text" id="search-room-campus" maxlength="10" placeholder="Leave blank to search for all campuses">
+                        <label for="search-room-campus" id="search-room-campus-label">Campus</label>
+                    </div>
+                </div>
+
+                <div class="row">
+                    <div class="input-field col s12">
+                        <input type="text" id="search-room-capacity" maxlength="10" placeholder="Leave blank to search for any capacity">
+                        <label for="search-room-capacity" id="search-room-capacity-label">Capacity</label>
+                    </div>
+                </div>
+
+                <div class="row">
+                    <div class="input-field col s12">
+                        <select id="search-room-type" required>
+                            
+                            <option value="-1" selected>Any</option>
+                            <option value="1">Theory</option>
+                            <option value="2">Lab(Computer)</option>
+                            <option value="3">Lab(Electronics)</option>
+                            <option value="4">Lab(Natural Science)</option>
+                            <option value="5">Other</option>
+                        </select>
+                        <label for="search-room-type" id="search-room-type-label" data-error="Error">Type</label>
+                    </div>
+                </div>
+
+
+
+
+                <div class="row right">
+                    <button class="btn waves-effect waves-light red" type="button" onclick="$('#search-room-modal').closeModal();">Cancel</button>
+                    <button class="btn waves-effect waves-light" type="button" id="search-room-search-button">Search</button>
+
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+       
+
+<div id="delete-room-modal" class="modal">
+    <div class="modal-content">
+        <div class="row">
+            <h5 id="delete-room-header">Delete Room</h5>
+            <span>Are you sure? All information, including class booking information, related to this room will be deleted permanently.</span>
+        </div>
+        <div class="row right">
+                <button class="btn waves-effect waves-light red" type="button" onclick="$('#delete-room-modal').closeModal();">No</button>
+                <button id="room-delete-yes-button" class="btn waves-effect waves-light" type="button">Yes</button>
+
+        </div>
+    </div>
+</div>
+       
+
+<div id="sort-room-modal" class="modal">
+    <div class="modal-content">
+        <div class="row">
+            <h5 id="sort-room-header">Sort Room</h5>
+            <table id="room-sort-criteria-table">
+                
+            </table>
+            <a href="#" id="room-add-sort" class="btn waves-effect waves-light">Add Criteria</a>
+            <a href="#" id="room-delete-sort" class="btn waves-effect waves-light disabled" >Delete Criteria</a>
+        </div>
+        <div class="row right">
+                <button class="btn waves-effect waves-light red" type="button" onclick="$('#sort-room-modal').closeModal();">Cancel</button>
+                <button id="room-sort-criteria-button" class="btn waves-effect waves-light" type="button">Sort</button>
+        </div>
+    </div>
+</div>

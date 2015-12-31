@@ -47,8 +47,6 @@
         $taken = 0;
         $offset = $page * $schedulePerPage;
         
-        echo "<extra>page ".$page." offset ".$offset."</extra>";
-        
         foreach($ret as $r) {
             if($skipped < $offset) {$skipped++; continue;}
             echo "<schedule>";

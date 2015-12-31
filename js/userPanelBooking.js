@@ -1,5 +1,5 @@
 function getBookingsContent() {
-    $("#" + contentId).load(htmlContent + "user_booking.html", function() {
+    $("#" + contentId).load(htmlContent + "user_booking_static.html", function() {
         
         $(".create-booking-modal-trigger").leanModal({
             dismissible: true, // Modal can be dismissed by clicking outside of the modal
@@ -40,7 +40,7 @@ function getBookingsContent() {
                 reportContent.appendChild(document.createElement("hr"));
                 
                 var ajaxRequest = getXMLHTTPRequest();
-                ajaxRequest.open("POST", "include/ajaxBookingReport.php", true);
+                ajaxRequest.open("POST", "include/ajaxUserBookingReport.php", true);
                 ajaxRequest.onreadystatechange = response;
                 ajaxRequest.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
                 
@@ -58,6 +58,8 @@ function getBookingsContent() {
                         
                         var statisticsTable = document.createElement("table");
                         statisticsTable.style.border = "1px solid black";
+                        statisticsTable.style.width = "100%";
+                        
                         
                         statisticsTable.innerHTML = "<thead><tr><th colspan=\"2\" style=\"text-align:center;\">Statistics</th></tr></thead>";
                         
@@ -88,6 +90,7 @@ function getBookingsContent() {
                         
                         var expiredTable = document.createElement("table");
                         expiredTable.style.border = "1px solid black";
+                        expiredTable.style.width = "100%";
                         
                         expiredTable.innerHTML = "<thead><tr><th colspan=\"6\" style=\"text-align:center;\">Expired Bookings</th></tr><tr><th>Room</th><th>Date</th><th>Course</th><th>From</th><th>To</th><th>Type</th></tr></thead>";
                         
@@ -128,6 +131,7 @@ function getBookingsContent() {
                         
                             var validTable = document.createElement("table");
                             validTable.style.border = "1px solid black";
+                            validTable.style.width = "100%";
 
                             validTable.innerHTML = "<thead><tr><th colspan=\"6\" style=\"text-align:center;\">Valid Bookings</th></tr><tr><th>Room</th><th>Date</th><th>Course</th><th>From</th><th>To</th><th>Type</th></tr></thead>";
 
@@ -164,43 +168,38 @@ function getBookingsContent() {
                             reportContent.appendChild(validTable);
                             reportContent.appendChild(document.createElement("br"));
                             
+                            
+                        }
+                        if(expiredValueCell.innerHTML != "0" || validValueCell.innerHTML != "0") {
                             var footer = document.createElement("div");
                             footer.className = "row";
-                            
+
                             var pdfButton = document.createElement("a");
                             pdfButton.className = "waves-effect waves-light btn col s12";
                             pdfButton.innerHTML = "Download Report";
                             pdfButton.id = "download-button";
-                            
                             pdfButton.onclick = function() {
-                                var doc = new jsPDF();          
-                                var elementHandler = {
-                                    '#download-button': function (element, renderer) {
-                                        return true;
-                                    }
-                                };
+                                ajaxRequest = getXMLHTTPRequest();
+                                ajaxRequest.open("POST", "include/ajaxPDFGenerator.php", true);
+                                ajaxRequest.onreadystatechange = response2;
+                                ajaxRequest.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
                                 
-                                var source = reportContent;
-                                doc.fromHTML(
-                                    source,
-                                    15,
-                                    15,
-                                    {
-                                        'width': 180,'elementHandlers': elementHandler
+                                var content = {
+                                    content : reportContent.innerHTML
+                                }
+                                
+                                ajaxRequest.send("content=" + JSON.stringify(content));
+                                
+                                function response2() {
+                                    if(ajaxRequest.readyState == 4 && ajaxRequest.status == 200) {
+                                        console.log(ajaxRequest.responseText);
                                     }
-                                );
-                                $("report-booking-modal").closeModal();
+                                }
+                            }
 
-                                doc.output("dataurlnewwindow");
-                                
-                                
-                            };
-                            
                             footer.appendChild(pdfButton);
                             reportContent.appendChild(footer);
-                            
                         }
-                        
                         
                     }
                 }
@@ -494,16 +493,16 @@ function showDeleteBooking(id) {
         ajaxRequest.send("id=" + id);
 
         function response() {
-                if(ajaxRequest.readyState == 4 && ajaxRequest.status == 200) {
-                    if(ajaxRequest.responseText == "true") {
-                        updateBookingList(currentBookingPage, pagination, document.getElementById("booking-filter").value);
-                        $('#delete-booking-modal').closeModal();
-                        Materialize.toast('Deleted booking!', 2000);
-                    }
-                    else {
-                        Materialize.toast('Failed to delete booking!', 2000);
-                    }
+            if(ajaxRequest.readyState == 4 && ajaxRequest.status == 200) {
+                if(ajaxRequest.responseText == "true") {
+                    updateBookingList(currentBookingPage, pagination, document.getElementById("booking-filter").value);
+                    $('#delete-booking-modal').closeModal();
+                    Materialize.toast('Deleted booking!', 2000);
                 }
+                else {
+                    Materialize.toast('Failed to delete booking!', 2000);
+                }
+            }
         }
         
     };
